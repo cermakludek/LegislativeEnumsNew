@@ -1,0 +1,177 @@
+@page "/admin/dashboard"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@attribute [Authorize(Roles = "Admin")]
+@inject ApplicationDbContext DbContext
+
+<PageTitle>Admin Dashboard</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-speedometer2 me-2"></i>
+        Admin Dashboard
+    </h1>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-1 text-white-50">Uživatelé</h6>
+                        <h2 class="card-title mb-0">@userCount</h2>
+                    </div>
+                    <i class="bi bi-people fs-1 opacity-50"></i>
+                </div>
+            </div>
+            <a href="/admin/users" class="card-footer bg-transparent border-0 text-white-50 text-decoration-none">
+                Zobrazit všechny <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-1 text-white-50">Číselníky</h6>
+                        <h2 class="card-title mb-0">@codelistCount</h2>
+                    </div>
+                    <i class="bi bi-journal-code fs-1 opacity-50"></i>
+                </div>
+            </div>
+            <a href="/" class="card-footer bg-transparent border-0 text-white-50 text-decoration-none">
+                Zobrazit všechny <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-1 text-white-50">API Klíče</h6>
+                        <h2 class="card-title mb-0">@apiKeyCount</h2>
+                    </div>
+                    <i class="bi bi-key fs-1 opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card bg-warning text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-1 text-white-50">Audit záznamy</h6>
+                        <h2 class="card-title mb-0">@auditCount</h2>
+                    </div>
+                    <i class="bi bi-journal-text fs-1 opacity-50"></i>
+                </div>
+            </div>
+            <a href="/admin/audit" class="card-footer bg-transparent border-0 text-white-50 text-decoration-none">
+                Zobrazit všechny <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <i class="bi bi-clock-history me-2"></i>
+                Poslední změny
+            </div>
+            <div class="card-body">
+                @if (recentAudits == null || !recentAudits.Any())
+                {
+                    <p class="text-muted">Žádné změny</p>
+                }
+                else
+                {
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var audit in recentAudits)
+                        {
+                            <li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <div>
+                                    <span class="badge @GetChangeTypeBadgeClass(audit.ChangeType) me-2">@audit.ChangeType</span>
+                                    <strong>@audit.EntityType</strong>
+                                    <span class="text-muted">(@audit.EntityCode)</span>
+                                </div>
+                                <small class="text-muted">@audit.ChangedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <i class="bi bi-people me-2"></i>
+                Noví uživatelé
+            </div>
+            <div class="card-body">
+                @if (recentUsers == null || !recentUsers.Any())
+                {
+                    <p class="text-muted">Žádní noví uživatelé</p>
+                }
+                else
+                {
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var user in recentUsers)
+                        {
+                            <li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <div>
+                                    <i class="bi bi-person-circle me-2"></i>
+                                    <strong>@user.UserName</strong>
+                                    <span class="badge bg-secondary ms-2">@user.Role</span>
+                                </div>
+                                <small class="text-muted">@user.CreatedAt.ToString("dd.MM.yyyy")</small>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int userCount;
+    private int codelistCount;
+    private int apiKeyCount;
+    private int auditCount;
+    private List<Data.Entities.AuditLog>? recentAudits;
+    private List<ApplicationUser>? recentUsers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userCount = await DbContext.Users.CountAsync();
+        codelistCount = await DbContext.CodelistRegistry.CountAsync();
+        apiKeyCount = await DbContext.ApiKeys.CountAsync();
+        auditCount = await DbContext.AuditLogs.CountAsync();
+
+        recentAudits = await DbContext.AuditLogs
+            .OrderByDescending(a => a.ChangedAt)
+            .Take(5)
+            .ToListAsync();
+
+        recentUsers = await DbContext.Users
+            .OrderByDescending(u => u.CreatedAt)
+            .Take(5)
+            .ToListAsync();
+    }
+
+    private string GetChangeTypeBadgeClass(Data.Entities.ChangeType changeType) => changeType switch
+    {
+        Data.Entities.ChangeType.Create => "bg-success",
+        Data.Entities.ChangeType.Update => "bg-info",
+        Data.Entities.ChangeType.Delete => "bg-danger",
+        _ => "bg-secondary"
+    };
+}

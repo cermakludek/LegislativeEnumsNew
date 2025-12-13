@@ -1,0 +1,120 @@
+@page "/voltage-levels/{Id:long}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Data.Entities
+@attribute [Authorize]
+@inject ApplicationDbContext DbContext
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detail napěťové hladiny</PageTitle>
+
+@if (item == null)
+{
+    <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Načítání...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            <i class="bi bi-lightning me-2"></i>
+            @item.NameCs
+        </h1>
+        <div>
+            <a href="/voltage-levels" class="btn btn-outline-secondary me-2">
+                <i class="bi bi-arrow-left me-1"></i> Zpět
+            </a>
+            <AuthorizeView Roles="Admin,Contributor">
+                <a href="/voltage-levels/@item.Id/edit" class="btn btn-primary">
+                    <i class="bi bi-pencil me-1"></i> Upravit
+                </a>
+            </AuthorizeView>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="card-title mb-3">Základní informace</h5>
+                    <dl class="row">
+                        <dt class="col-sm-4">Kód</dt>
+                        <dd class="col-sm-8"><code class="fs-5">@item.Code</code></dd>
+
+                        <dt class="col-sm-4">Název (CZ)</dt>
+                        <dd class="col-sm-8">@item.NameCs</dd>
+
+                        <dt class="col-sm-4">Název (EN)</dt>
+                        <dd class="col-sm-8">@item.NameEn</dd>
+
+                        <dt class="col-sm-4">Rozsah napětí (CZ)</dt>
+                        <dd class="col-sm-8">@item.VoltageRangeCs</dd>
+
+                        <dt class="col-sm-4">Rozsah napětí (EN)</dt>
+                        <dd class="col-sm-8">@item.VoltageRangeEn</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="card-title mb-3">Platnost a metadata</h5>
+                    <dl class="row">
+                        <dt class="col-sm-4">Platnost od</dt>
+                        <dd class="col-sm-8">@(item.ValidFrom?.ToString("dd.MM.yyyy") ?? "-")</dd>
+
+                        <dt class="col-sm-4">Platnost do</dt>
+                        <dd class="col-sm-8">@(item.ValidTo?.ToString("dd.MM.yyyy") ?? "-")</dd>
+
+                        <dt class="col-sm-4">Pořadí</dt>
+                        <dd class="col-sm-8">@(item.SortOrder?.ToString() ?? "-")</dd>
+
+                        <dt class="col-sm-4">Stav</dt>
+                        <dd class="col-sm-8">
+                            @if (item.IsCurrentlyValid())
+                            {
+                                <span class="badge bg-success">Platný</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Neplatný</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Vytvořeno</dt>
+                        <dd class="col-sm-8">@item.CreatedAt.ToString("dd.MM.yyyy HH:mm") (@(item.CreatedBy ?? "system"))</dd>
+
+                        <dt class="col-sm-4">Upraveno</dt>
+                        <dd class="col-sm-8">
+                            @if (item.UpdatedAt.HasValue)
+                            {
+                                @item.UpdatedAt.Value.ToString("dd.MM.yyyy HH:mm") @(" (" + (item.UpdatedBy ?? "-") + ")")
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public long Id { get; set; }
+
+    private VoltageLevel? item;
+
+    protected override async Task OnInitializedAsync()
+    {
+        item = await DbContext.VoltageLevels.FindAsync(Id);
+        if (item == null)
+        {
+            NavigationManager.NavigateTo("/voltage-levels");
+        }
+    }
+}

@@ -1,0 +1,326 @@
+@page "/admin/flags"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Data.Entities
+@using LegislativeEnumsNew.Services
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject ApplicationDbContext DbContext
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAuditService AuditService
+
+<PageTitle>Správa příznaků</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-tags me-2"></i>
+        Správa příznaků
+    </h1>
+    <button class="btn btn-primary" @onclick="ShowCreateForm">
+        <i class="bi bi-plus-lg me-1"></i> Přidat příznak
+    </button>
+</div>
+
+@if (showForm)
+{
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">@(editingId.HasValue ? "Upravit příznak" : "Nový příznak")</h5>
+        </div>
+        <div class="card-body">
+            <EditForm Model="model" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Kód *</label>
+                            <InputText @bind-Value="model.Code" class="form-control" />
+                            <ValidationMessage For="() => model.Code" class="text-danger" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Název (CZ) *</label>
+                            <InputText @bind-Value="model.NameCs" class="form-control" />
+                            <ValidationMessage For="() => model.NameCs" class="text-danger" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Název (EN) *</label>
+                            <InputText @bind-Value="model.NameEn" class="form-control" />
+                            <ValidationMessage For="() => model.NameEn" class="text-danger" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Barva</label>
+                            <InputText @bind-Value="model.Color" class="form-control" placeholder="#FF0000" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ikona (Bootstrap Icons)</label>
+                            <InputText @bind-Value="model.IconClass" class="form-control" placeholder="bi-tag" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pořadí</label>
+                            <InputNumber @bind-Value="model.SortOrder" class="form-control" />
+                        </div>
+                        <div class="form-check mb-3">
+                            <InputCheckbox @bind-Value="model.Active" class="form-check-input" id="activeCheck" />
+                            <label class="form-check-label" for="activeCheck">Aktivní</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Popis (CZ)</label>
+                    <InputTextArea @bind-Value="model.DescriptionCs" class="form-control" rows="2" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Popis (EN)</label>
+                    <InputTextArea @bind-Value="model.DescriptionEn" class="form-control" rows="2" />
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i> @(editingId.HasValue ? "Uložit" : "Vytvořit")
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" @onclick="CancelForm">
+                        <i class="bi bi-x-lg me-1"></i> Zrušit
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@if (items == null)
+{
+    <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Načítání...</span>
+        </div>
+    </div>
+}
+else if (!items.Any())
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        Žádné příznaky nebyly nalezeny.
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 50px;">Ikona</th>
+                        <th>Kód</th>
+                        <th>Název</th>
+                        <th>Barva</th>
+                        <th>Stav</th>
+                        <th class="text-end">Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <i class="bi @(item.IconClass ?? "bi-tag")" style="color: @(item.Color ?? "#6c757d")"></i>
+                            </td>
+                            <td><code>@item.Code</code></td>
+                            <td>@item.NameCs</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.Color))
+                                {
+                                    <span class="badge" style="background-color: @item.Color">@item.Color</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.Active)
+                                {
+                                    <span class="badge bg-success">Aktivní</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Neaktivní</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-secondary" title="Upravit" @onclick="() => EditItem(item)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                @if (deleteConfirmId == item.Id)
+                                {
+                                    <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete(item.Id)">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" @onclick="CancelDelete">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-outline-danger" title="Smazat" @onclick="() => RequestDelete(item.Id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Flag>? items;
+    private long? deleteConfirmId;
+    private bool showForm;
+    private long? editingId;
+    private FlagModel model = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        items = await DbContext.Flags
+            .OrderBy(f => f.SortOrder)
+            .ThenBy(f => f.NameCs)
+            .ToListAsync();
+    }
+
+    private void ShowCreateForm()
+    {
+        model = new FlagModel { Active = true };
+        editingId = null;
+        showForm = true;
+    }
+
+    private void EditItem(Flag item)
+    {
+        model = new FlagModel
+        {
+            Code = item.Code,
+            NameCs = item.NameCs,
+            NameEn = item.NameEn,
+            DescriptionCs = item.DescriptionCs,
+            DescriptionEn = item.DescriptionEn,
+            Color = item.Color,
+            IconClass = item.IconClass,
+            Active = item.Active,
+            SortOrder = item.SortOrder
+        };
+        editingId = item.Id;
+        showForm = true;
+    }
+
+    private void CancelForm()
+    {
+        showForm = false;
+        editingId = null;
+        model = new();
+    }
+
+    private async Task HandleSubmit()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userName = authState.User.Identity?.Name ?? "unknown";
+
+        if (editingId.HasValue)
+        {
+            var oldItem = await DbContext.Flags.AsNoTracking().FirstOrDefaultAsync(f => f.Id == editingId.Value);
+            var item = await DbContext.Flags.FindAsync(editingId.Value);
+            if (item != null && oldItem != null)
+            {
+                item.Code = model.Code;
+                item.NameCs = model.NameCs;
+                item.NameEn = model.NameEn;
+                item.DescriptionCs = model.DescriptionCs;
+                item.DescriptionEn = model.DescriptionEn;
+                item.Color = model.Color;
+                item.IconClass = model.IconClass;
+                item.Active = model.Active;
+                item.SortOrder = model.SortOrder;
+                item.UpdatedAt = DateTime.UtcNow;
+                await DbContext.SaveChangesAsync();
+                await AuditService.LogUpdateAsync(oldItem, item, item.Code, userName);
+            }
+        }
+        else
+        {
+            var item = new Flag
+            {
+                Code = model.Code,
+                NameCs = model.NameCs,
+                NameEn = model.NameEn,
+                DescriptionCs = model.DescriptionCs,
+                DescriptionEn = model.DescriptionEn,
+                Color = model.Color,
+                IconClass = model.IconClass,
+                Active = model.Active,
+                SortOrder = model.SortOrder,
+                CreatedAt = DateTime.UtcNow
+            };
+            DbContext.Flags.Add(item);
+            await DbContext.SaveChangesAsync();
+            await AuditService.LogCreateAsync(item, item.Code, userName);
+        }
+
+        await LoadData();
+        CancelForm();
+    }
+
+    private void RequestDelete(long id)
+    {
+        deleteConfirmId = id;
+    }
+
+    private void CancelDelete()
+    {
+        deleteConfirmId = null;
+    }
+
+    private async Task ConfirmDelete(long id)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userName = authState.User.Identity?.Name ?? "unknown";
+
+        var item = await DbContext.Flags.FindAsync(id);
+        if (item != null)
+        {
+            var code = item.Code;
+            DbContext.Flags.Remove(item);
+            await DbContext.SaveChangesAsync();
+            await AuditService.LogDeleteAsync(item, code, userName);
+            await LoadData();
+        }
+        deleteConfirmId = null;
+    }
+
+    private class FlagModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Kód je povinný")]
+        public string Code { get; set; } = "";
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Název (CZ) je povinný")]
+        public string NameCs { get; set; } = "";
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Název (EN) je povinný")]
+        public string NameEn { get; set; } = "";
+
+        public string? DescriptionCs { get; set; }
+        public string? DescriptionEn { get; set; }
+        public string? Color { get; set; }
+        public string? IconClass { get; set; }
+        public bool Active { get; set; } = true;
+        public int? SortOrder { get; set; }
+    }
+}

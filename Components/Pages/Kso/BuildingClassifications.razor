@@ -1,0 +1,141 @@
+@page "/kso"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Data.Entities.Kso
+@attribute [Authorize]
+@rendermode InteractiveServer
+@inject ApplicationDbContext DbContext
+
+<PageTitle>KSO - Klasifikace stavebnich objektu</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-diagram-3 me-2"></i>
+        KSO - Klasifikace stavebnich objektu
+    </h1>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-muted">Filtr urovne:</span>
+            <div class="btn-group btn-group-sm">
+                <button class="btn @(filterLevel == null ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetFilter(null)">
+                    Vsechny
+                </button>
+                <button class="btn @(filterLevel == 1 ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetFilter(1)">
+                    Podskupiny
+                </button>
+                <button class="btn @(filterLevel == 2 ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetFilter(2)">
+                    Oddily
+                </button>
+                <button class="btn @(filterLevel == 3 ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetFilter(3)">
+                    Pododdily
+                </button>
+                <button class="btn @(filterLevel == 4 ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetFilter(4)">
+                    Konstrukce
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (items == null)
+{
+    <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Nacitani...</span>
+        </div>
+    </div>
+}
+else if (!filteredItems.Any())
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        Zadne zaznamy nebyly nalezeny.
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            <span>Celkem zaznamu: @filteredItems.Count</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Kod</th>
+                        <th>Uroven</th>
+                        <th>Nazev</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in filteredItems)
+                    {
+                        var indent = (item.Level - 1) * 20;
+                        <tr class="@GetRowClass(item.Level)">
+                            <td><code>@item.Code</code></td>
+                            <td>
+                                <span class="badge @GetLevelBadgeClass(item.Level)">@GetLevelName(item.Level)</span>
+                            </td>
+                            <td style="padding-left: @(indent)px;">@item.NameCs</td>
+                            <td class="text-muted small">@(item.DescriptionCs ?? "-")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    private List<BuildingClassification>? items;
+    private int? filterLevel;
+
+    private List<BuildingClassification> filteredItems =>
+        items?.Where(x => filterLevel == null || x.Level == filterLevel)
+             .OrderBy(x => x.Code)
+             .ToList() ?? new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await DbContext.BuildingClassifications
+            .OrderBy(x => x.Code)
+            .ToListAsync();
+    }
+
+    private void SetFilter(int? level)
+    {
+        filterLevel = level;
+    }
+
+    private string GetLevelName(int level) => level switch
+    {
+        1 => "Podskupina",
+        2 => "Oddil",
+        3 => "Pododdil",
+        4 => "Konstrukce",
+        _ => level.ToString()
+    };
+
+    private string GetLevelBadgeClass(int level) => level switch
+    {
+        1 => "bg-primary",
+        2 => "bg-info",
+        3 => "bg-success",
+        4 => "bg-secondary",
+        _ => "bg-dark"
+    };
+
+    private string GetRowClass(int level) => level switch
+    {
+        1 => "fw-bold",
+        2 => "",
+        3 => "text-muted",
+        4 => "small text-muted",
+        _ => ""
+    };
+}

@@ -1,0 +1,213 @@
+@page "/voltage-levels/{Id:long}/edit"
+@page "/voltage-levels/create"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Data.Entities
+@using System.ComponentModel.DataAnnotations
+@using LegislativeEnumsNew.Services
+@attribute [Authorize(Roles = "Admin,Contributor")]
+@rendermode InteractiveServer
+@inject ApplicationDbContext DbContext
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAuditService AuditService
+
+<PageTitle>@(IsNew ? "Nová napěťová hladina" : "Upravit napěťovou hladinu")</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-lightning me-2"></i>
+        @(IsNew ? "Nová napěťová hladina" : "Upravit napěťovou hladinu")
+    </h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <EditForm Model="model" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="code" class="form-label">Kód *</label>
+                        <InputText id="code" @bind-Value="model.Code" class="form-control" />
+                        <ValidationMessage For="() => model.Code" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nameCs" class="form-label">Název (CZ) *</label>
+                        <InputText id="nameCs" @bind-Value="model.NameCs" class="form-control" />
+                        <ValidationMessage For="() => model.NameCs" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nameEn" class="form-label">Název (EN) *</label>
+                        <InputText id="nameEn" @bind-Value="model.NameEn" class="form-control" />
+                        <ValidationMessage For="() => model.NameEn" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="voltageRangeCs" class="form-label">Rozsah napětí (CZ) *</label>
+                        <InputText id="voltageRangeCs" @bind-Value="model.VoltageRangeCs" class="form-control" />
+                        <ValidationMessage For="() => model.VoltageRangeCs" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="voltageRangeEn" class="form-label">Rozsah napětí (EN) *</label>
+                        <InputText id="voltageRangeEn" @bind-Value="model.VoltageRangeEn" class="form-control" />
+                        <ValidationMessage For="() => model.VoltageRangeEn" class="text-danger" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="validFrom" class="form-label">Platnost od</label>
+                        <InputDate id="validFrom" @bind-Value="model.ValidFrom" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="validTo" class="form-label">Platnost do</label>
+                        <InputDate id="validTo" @bind-Value="model.ValidTo" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="sortOrder" class="form-label">Pořadí</label>
+                        <InputNumber id="sortOrder" @bind-Value="model.SortOrder" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="d-flex justify-content-between">
+                <a href="/voltage-levels" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-lg me-1"></i> Zrušit
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i> @(IsNew ? "Vytvořit" : "Uložit")
+                </button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public long Id { get; set; }
+
+    private bool IsNew => Id == 0;
+
+    private VoltageLevelModel model { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!IsNew)
+        {
+            var item = await DbContext.VoltageLevels.FindAsync(Id);
+            if (item == null)
+            {
+                NavigationManager.NavigateTo("/voltage-levels");
+                return;
+            }
+            model = new VoltageLevelModel
+            {
+                Code = item.Code,
+                NameCs = item.NameCs,
+                NameEn = item.NameEn,
+                VoltageRangeCs = item.VoltageRangeCs,
+                VoltageRangeEn = item.VoltageRangeEn,
+                ValidFrom = item.ValidFrom,
+                ValidTo = item.ValidTo,
+                SortOrder = item.SortOrder
+            };
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userName = authState.User.Identity?.Name ?? "unknown";
+
+        if (IsNew)
+        {
+            var item = new VoltageLevel
+            {
+                Code = model.Code,
+                NameCs = model.NameCs,
+                NameEn = model.NameEn,
+                VoltageRangeCs = model.VoltageRangeCs,
+                VoltageRangeEn = model.VoltageRangeEn,
+                ValidFrom = model.ValidFrom,
+                ValidTo = model.ValidTo,
+                SortOrder = model.SortOrder,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = userName
+            };
+            DbContext.VoltageLevels.Add(item);
+            await DbContext.SaveChangesAsync();
+            await AuditService.LogCreateAsync(item, item.Code, userName);
+        }
+        else
+        {
+            var item = await DbContext.VoltageLevels.AsNoTracking().FirstOrDefaultAsync(v => v.Id == Id);
+            if (item != null)
+            {
+                var oldItem = new VoltageLevel
+                {
+                    Id = item.Id, Code = item.Code, NameCs = item.NameCs, NameEn = item.NameEn,
+                    VoltageRangeCs = item.VoltageRangeCs, VoltageRangeEn = item.VoltageRangeEn,
+                    ValidFrom = item.ValidFrom, ValidTo = item.ValidTo, SortOrder = item.SortOrder
+                };
+
+                var trackedItem = await DbContext.VoltageLevels.FindAsync(Id);
+                if (trackedItem != null)
+                {
+                    trackedItem.Code = model.Code;
+                    trackedItem.NameCs = model.NameCs;
+                    trackedItem.NameEn = model.NameEn;
+                    trackedItem.VoltageRangeCs = model.VoltageRangeCs;
+                    trackedItem.VoltageRangeEn = model.VoltageRangeEn;
+                    trackedItem.ValidFrom = model.ValidFrom;
+                    trackedItem.ValidTo = model.ValidTo;
+                    trackedItem.SortOrder = model.SortOrder;
+                    trackedItem.UpdatedAt = DateTime.UtcNow;
+                    trackedItem.UpdatedBy = userName;
+                    await DbContext.SaveChangesAsync();
+                    await AuditService.LogUpdateAsync(oldItem, trackedItem, trackedItem.Code, userName);
+                }
+            }
+        }
+
+        NavigationManager.NavigateTo("/voltage-levels");
+    }
+
+    private sealed class VoltageLevelModel
+    {
+        [Required(ErrorMessage = "Kód je povinný")]
+        [StringLength(10, ErrorMessage = "Kód může mít maximálně 10 znaků")]
+        public string Code { get; set; } = "";
+
+        [Required(ErrorMessage = "Název (CZ) je povinný")]
+        [StringLength(100, ErrorMessage = "Název může mít maximálně 100 znaků")]
+        public string NameCs { get; set; } = "";
+
+        [Required(ErrorMessage = "Název (EN) je povinný")]
+        [StringLength(100, ErrorMessage = "Název může mít maximálně 100 znaků")]
+        public string NameEn { get; set; } = "";
+
+        [Required(ErrorMessage = "Rozsah napětí (CZ) je povinný")]
+        [StringLength(100, ErrorMessage = "Rozsah může mít maximálně 100 znaků")]
+        public string VoltageRangeCs { get; set; } = "";
+
+        [Required(ErrorMessage = "Rozsah napětí (EN) je povinný")]
+        [StringLength(100, ErrorMessage = "Rozsah může mít maximálně 100 znaků")]
+        public string VoltageRangeEn { get; set; } = "";
+
+        public DateOnly? ValidFrom { get; set; }
+        public DateOnly? ValidTo { get; set; }
+        public int? SortOrder { get; set; }
+    }
+}

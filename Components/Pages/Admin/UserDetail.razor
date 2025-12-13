@@ -1,0 +1,164 @@
+@page "/admin/users/{Id}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@attribute [Authorize(Roles = "Admin")]
+@inject ApplicationDbContext DbContext
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detail uživatele</PageTitle>
+
+@if (user == null)
+{
+    <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Načítání...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            <i class="bi bi-person me-2"></i>
+            @user.GetDisplayName()
+        </h1>
+        <div>
+            <a href="/admin/users" class="btn btn-outline-secondary me-2">
+                <i class="bi bi-arrow-left me-1"></i> Zpět
+            </a>
+            <a href="/admin/users/@user.Id/edit" class="btn btn-primary">
+                <i class="bi bi-pencil me-1"></i> Upravit
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Základní informace</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Uživatelské jméno</dt>
+                        <dd class="col-sm-8"><code>@user.UserName</code></dd>
+
+                        <dt class="col-sm-4">Jméno</dt>
+                        <dd class="col-sm-8">@(user.FirstName ?? "-")</dd>
+
+                        <dt class="col-sm-4">Příjmení</dt>
+                        <dd class="col-sm-8">@(user.LastName ?? "-")</dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">
+                            @user.Email
+                            @if (user.EmailConfirmed)
+                            {
+                                <i class="bi bi-check-circle-fill text-success ms-1" title="Ověřený"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-x-circle-fill text-warning ms-1" title="Neověřený"></i>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Telefon</dt>
+                        <dd class="col-sm-8">@(user.PhoneNumber ?? "-")</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Oprávnění a stav</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Role</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge @GetRoleBadgeClass(user.Role)">@user.Role</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Stav</dt>
+                        <dd class="col-sm-8">
+                            @if (user.Enabled)
+                            {
+                                <span class="badge bg-success">Aktivní</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Neaktivní</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Tariní plán</dt>
+                        <dd class="col-sm-8">@(user.UsagePlan?.ToString() ?? "-")</dd>
+
+                        <dt class="col-sm-4">Zkušební doba do</dt>
+                        <dd class="col-sm-8">@(user.TrialEndDate?.ToString("dd.MM.yyyy") ?? "-")</dd>
+
+                        <dt class="col-sm-4">2FA</dt>
+                        <dd class="col-sm-8">
+                            @if (user.TwoFactorEnabled)
+                            {
+                                <span class="badge bg-success">Aktivní</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Neaktivní</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Metadata</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-2">ID</dt>
+                <dd class="col-sm-10"><code>@user.Id</code></dd>
+
+                <dt class="col-sm-2">Vytvořeno</dt>
+                <dd class="col-sm-10">@user.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                <dt class="col-sm-2">Zamčený do</dt>
+                <dd class="col-sm-10">@(user.LockoutEnd?.ToString("dd.MM.yyyy HH:mm") ?? "-")</dd>
+
+                <dt class="col-sm-2">Neúspěšné pokusy</dt>
+                <dd class="col-sm-10">@user.AccessFailedCount</dd>
+            </dl>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = "";
+
+    private ApplicationUser? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await DbContext.Users.FindAsync(Id);
+        if (user == null)
+        {
+            NavigationManager.NavigateTo("/admin/users");
+        }
+    }
+
+    private string GetRoleBadgeClass(UserRole role) => role switch
+    {
+        UserRole.Admin => "bg-danger",
+        UserRole.Contributor => "bg-primary",
+        UserRole.Reader => "bg-secondary",
+        _ => "bg-secondary"
+    };
+}

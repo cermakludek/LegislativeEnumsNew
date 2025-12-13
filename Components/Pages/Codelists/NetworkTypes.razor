@@ -1,0 +1,105 @@
+@page "/network-types"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Data.Entities
+@attribute [Authorize]
+@inject ApplicationDbContext DbContext
+
+<PageTitle>Typy sítí</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-diagram-3 me-2"></i>
+        Typy sítí
+    </h1>
+    <AuthorizeView Roles="Admin,Contributor">
+        <a href="/network-types/create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Přidat
+        </a>
+    </AuthorizeView>
+</div>
+
+@if (items == null)
+{
+    <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Načítání...</span>
+        </div>
+    </div>
+}
+else if (!items.Any())
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        Žádné záznamy nebyly nalezeny.
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Kód</th>
+                        <th>Název</th>
+                        <th>Popis</th>
+                        <th>Platnost od</th>
+                        <th>Platnost do</th>
+                        <th class="text-end">Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        <tr class="@(!item.IsCurrentlyValid() ? "table-secondary" : "")">
+                            <td><code>@item.Code</code></td>
+                            <td>@item.NameCs</td>
+                            <td class="text-truncate" style="max-width: 300px;">@item.DescriptionCs</td>
+                            <td>@(item.ValidFrom?.ToString("dd.MM.yyyy") ?? "-")</td>
+                            <td>@(item.ValidTo?.ToString("dd.MM.yyyy") ?? "-")</td>
+                            <td class="text-end">
+                                <a href="/network-types/@item.Id" class="btn btn-sm btn-outline-primary" title="Detail">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <AuthorizeView Roles="Admin,Contributor">
+                                    <a href="/network-types/@item.Id/edit" class="btn btn-sm btn-outline-secondary" title="Upravit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </AuthorizeView>
+                                <AuthorizeView Roles="Admin">
+                                    <button class="btn btn-sm btn-outline-danger" title="Smazat" @onclick="() => DeleteItem(item.Id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </AuthorizeView>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    private List<NetworkType>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await DbContext.NetworkTypes
+            .OrderBy(n => n.SortOrder)
+            .ToListAsync();
+    }
+
+    private async Task DeleteItem(long id)
+    {
+        var item = await DbContext.NetworkTypes.FindAsync(id);
+        if (item != null)
+        {
+            DbContext.NetworkTypes.Remove(item);
+            await DbContext.SaveChangesAsync();
+            items = await DbContext.NetworkTypes.OrderBy(n => n.SortOrder).ToListAsync();
+        }
+    }
+}

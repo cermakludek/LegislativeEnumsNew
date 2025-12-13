@@ -1,0 +1,144 @@
+@page "/voltage-levels"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Data.Entities
+@using LegislativeEnumsNew.Services
+@attribute [Authorize]
+@rendermode InteractiveServer
+@inject ApplicationDbContext DbContext
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAuditService AuditService
+
+<PageTitle>Napěťové hladiny</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-lightning me-2"></i>
+        Napěťové hladiny
+    </h1>
+    <AuthorizeView Roles="Admin,Contributor">
+        <a href="/voltage-levels/create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Přidat
+        </a>
+    </AuthorizeView>
+</div>
+
+@if (items == null)
+{
+    <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Načítání...</span>
+        </div>
+    </div>
+}
+else if (!items.Any())
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        Žádné záznamy nebyly nalezeny.
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Kód</th>
+                        <th>Název</th>
+                        <th>Rozsah napětí</th>
+                        <th>Platnost od</th>
+                        <th>Platnost do</th>
+                        <th class="text-end">Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in items)
+                    {
+                        <tr class="@(!item.IsCurrentlyValid() ? "table-secondary" : "")">
+                            <td><code>@item.Code</code></td>
+                            <td>@item.NameCs</td>
+                            <td>@item.VoltageRangeCs</td>
+                            <td>@(item.ValidFrom?.ToString("dd.MM.yyyy") ?? "-")</td>
+                            <td>@(item.ValidTo?.ToString("dd.MM.yyyy") ?? "-")</td>
+                            <td class="text-end">
+                                <a href="/voltage-levels/@item.Id" class="btn btn-sm btn-outline-primary" title="Detail">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <AuthorizeView Roles="Admin,Contributor">
+                                    <a href="/voltage-levels/@item.Id/edit" class="btn btn-sm btn-outline-secondary" title="Upravit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </AuthorizeView>
+                                <AuthorizeView Roles="Admin">
+                                    @if (deleteConfirmId == item.Id)
+                                    {
+                                        <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete(item.Id)">
+                                            <i class="bi bi-check-lg"></i> Potvrdit
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary" @onclick="CancelDelete">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-outline-danger" title="Smazat" @onclick="() => RequestDelete(item.Id)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    }
+                                </AuthorizeView>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    private List<VoltageLevel>? items;
+    private long? deleteConfirmId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        items = await DbContext.VoltageLevels
+            .OrderBy(v => v.SortOrder)
+            .ToListAsync();
+    }
+
+    private void RequestDelete(long id)
+    {
+        deleteConfirmId = id;
+    }
+
+    private void CancelDelete()
+    {
+        deleteConfirmId = null;
+    }
+
+    private async Task ConfirmDelete(long id)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userName = authState.User.Identity?.Name ?? "unknown";
+
+        var item = await DbContext.VoltageLevels.FindAsync(id);
+        if (item != null)
+        {
+            var code = item.Code;
+            DbContext.VoltageLevels.Remove(item);
+            await DbContext.SaveChangesAsync();
+            await AuditService.LogDeleteAsync(item, code, userName);
+            await LoadData();
+        }
+        deleteConfirmId = null;
+    }
+}

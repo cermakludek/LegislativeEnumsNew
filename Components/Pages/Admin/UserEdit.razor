@@ -1,0 +1,267 @@
+@page "/admin/users/{Id}/edit"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@using System.ComponentModel.DataAnnotations
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject ApplicationDbContext DbContext
+@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager NavigationManager
+
+<PageTitle>Upravit uživatele</PageTitle>
+
+@if (user == null)
+{
+    <div class="d-flex justify-content-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Načítání...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            <i class="bi bi-person-gear me-2"></i>
+            Upravit uživatele: @user.UserName
+        </h1>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger">@errorMessage</div>
+            }
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                <div class="alert alert-success">@successMessage</div>
+            }
+
+            <EditForm Model="model" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="mb-3">Osobní údaje</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">Uživatelské jméno</label>
+                            <InputText @bind-Value="model.UserName" class="form-control" />
+                            <ValidationMessage For="() => model.UserName" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Jméno</label>
+                            <InputText @bind-Value="model.FirstName" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Příjmení</label>
+                            <InputText @bind-Value="model.LastName" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <InputText @bind-Value="model.Email" class="form-control" />
+                            <ValidationMessage For="() => model.Email" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Telefon</label>
+                            <InputText @bind-Value="model.PhoneNumber" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-3">Oprávnění</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <InputSelect @bind-Value="model.Role" class="form-select">
+                                @foreach (var role in Enum.GetValues<UserRole>())
+                                {
+                                    <option value="@role">@role</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tarifní plán</label>
+                            <InputSelect @bind-Value="model.UsagePlan" class="form-select">
+                                <option value="">-- Bez plánu --</option>
+                                @foreach (var plan in Enum.GetValues<UsagePlan>())
+                                {
+                                    <option value="@plan">@plan</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Zkušební doba do</label>
+                            <InputDate @bind-Value="model.TrialEndDate" class="form-control" />
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <InputCheckbox @bind-Value="model.Enabled" class="form-check-input" id="enabledCheck" />
+                            <label class="form-check-label" for="enabledCheck">Účet aktivní</label>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <InputCheckbox @bind-Value="model.EmailConfirmed" class="form-check-input" id="emailConfirmedCheck" />
+                            <label class="form-check-label" for="emailConfirmedCheck">Email ověřen</label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="d-flex justify-content-between">
+                    <a href="/admin/users/@Id" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-lg me-1"></i> Zrušit
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i> Uložit
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="bi bi-key me-2"></i>Reset hesla</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Nastavení nového hesla pro uživatele.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Nové heslo</label>
+                        <input type="password" @bind="newPassword" class="form-control" />
+                    </div>
+                    <button class="btn btn-warning" @onclick="ResetPassword" disabled="@string.IsNullOrEmpty(newPassword)">
+                        <i class="bi bi-key me-1"></i> Nastavit heslo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = "";
+
+    private ApplicationUser? user;
+    private UserModel model = new();
+    private string? errorMessage;
+    private string? successMessage;
+    private string newPassword = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await DbContext.Users.FindAsync(Id);
+        if (user == null)
+        {
+            NavigationManager.NavigateTo("/admin/users");
+            return;
+        }
+
+        model = new UserModel
+        {
+            UserName = user.UserName ?? "",
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email ?? "",
+            PhoneNumber = user.PhoneNumber,
+            Role = user.Role,
+            UsagePlan = user.UsagePlan,
+            TrialEndDate = user.TrialEndDate,
+            Enabled = user.Enabled,
+            EmailConfirmed = user.EmailConfirmed
+        };
+    }
+
+    private async Task HandleSubmit()
+    {
+        errorMessage = null;
+        successMessage = null;
+
+        if (user == null) return;
+
+        user.UserName = model.UserName;
+        user.NormalizedUserName = model.UserName.ToUpperInvariant();
+        user.FirstName = model.FirstName;
+        user.LastName = model.LastName;
+        user.Email = model.Email;
+        user.NormalizedEmail = model.Email.ToUpperInvariant();
+        user.PhoneNumber = model.PhoneNumber;
+        user.Role = model.Role;
+        user.UsagePlan = model.UsagePlan;
+        user.TrialEndDate = model.TrialEndDate;
+        user.Enabled = model.Enabled;
+        user.EmailConfirmed = model.EmailConfirmed;
+
+        try
+        {
+            await DbContext.SaveChangesAsync();
+            successMessage = "Uživatel byl úspěšně uložen.";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Chyba při ukládání: {ex.Message}";
+        }
+    }
+
+    private async Task ResetPassword()
+    {
+        errorMessage = null;
+        successMessage = null;
+
+        if (user == null || string.IsNullOrEmpty(newPassword)) return;
+
+        try
+        {
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+            var result = await UserManager.ResetPasswordAsync(user, token, newPassword);
+
+            if (result.Succeeded)
+            {
+                successMessage = "Heslo bylo úspěšně změněno.";
+                newPassword = "";
+            }
+            else
+            {
+                errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Chyba při změně hesla: {ex.Message}";
+        }
+    }
+
+    private class UserModel
+    {
+        [Required(ErrorMessage = "Uživatelské jméno je povinné")]
+        public string UserName { get; set; } = "";
+
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+
+        [Required(ErrorMessage = "Email je povinný")]
+        [EmailAddress(ErrorMessage = "Neplatný formát emailu")]
+        public string Email { get; set; } = "";
+
+        public string? PhoneNumber { get; set; }
+        public UserRole Role { get; set; }
+        public UsagePlan? UsagePlan { get; set; }
+        public DateOnly? TrialEndDate { get; set; }
+        public bool Enabled { get; set; }
+        public bool EmailConfirmed { get; set; }
+    }
+}
