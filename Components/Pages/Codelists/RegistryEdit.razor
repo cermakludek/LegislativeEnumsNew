@@ -1,0 +1,288 @@
+@page "/codelists/admin/{Id:long}/edit"
+@page "/codelists/admin/create"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Data.Entities
+@using System.ComponentModel.DataAnnotations
+@using LegislativeEnumsNew.Services
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject ApplicationDbContext DbContext
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAuditService AuditService
+
+<PageTitle>@(IsNew ? "Nový číselník" : "Upravit číselník")</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="bi bi-journal-code me-2"></i>
+        @(IsNew ? "Nový číselník" : "Upravit číselník")
+    </h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <EditForm Model="model" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="code" class="form-label">Kód *</label>
+                        <InputText id="code" @bind-Value="model.Code" class="form-control" />
+                        <ValidationMessage For="() => model.Code" class="text-danger" />
+                        <div class="form-text">Unikátní identifikátor číselníku (např. VOLTAGE_LEVEL)</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nameCs" class="form-label">Název (CZ) *</label>
+                        <InputText id="nameCs" @bind-Value="model.NameCs" class="form-control" />
+                        <ValidationMessage For="() => model.NameCs" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nameEn" class="form-label">Název (EN) *</label>
+                        <InputText id="nameEn" @bind-Value="model.NameEn" class="form-control" />
+                        <ValidationMessage For="() => model.NameEn" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descriptionCs" class="form-label">Popis (CZ)</label>
+                        <InputTextArea id="descriptionCs" @bind-Value="model.DescriptionCs" class="form-control" rows="3" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descriptionEn" class="form-label">Popis (EN)</label>
+                        <InputTextArea id="descriptionEn" @bind-Value="model.DescriptionEn" class="form-control" rows="3" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="webUrl" class="form-label">Web URL *</label>
+                        <InputText id="webUrl" @bind-Value="model.WebUrl" class="form-control" />
+                        <ValidationMessage For="() => model.WebUrl" class="text-danger" />
+                        <div class="form-text">Relativní URL pro webové zobrazení (např. /voltage-levels)</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="apiUrl" class="form-label">API URL *</label>
+                        <InputText id="apiUrl" @bind-Value="model.ApiUrl" class="form-control" />
+                        <ValidationMessage For="() => model.ApiUrl" class="text-danger" />
+                        <div class="form-text">Relativní URL pro API endpoint (např. /api/voltage-levels)</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="iconClass" class="form-label">Ikona (Bootstrap Icons)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi @(string.IsNullOrEmpty(model.IconClass) ? "bi-list" : model.IconClass)"></i>
+                            </span>
+                            <InputText id="iconClass" @bind-Value="model.IconClass" class="form-control" placeholder="bi-lightning" />
+                        </div>
+                        <div class="form-text">
+                            Třída ikony z <a href="https://icons.getbootstrap.com/" target="_blank">Bootstrap Icons</a>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="sortOrder" class="form-label">Pořadí</label>
+                        <InputNumber id="sortOrder" @bind-Value="model.SortOrder" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Štítky (Flags)</label>
+                        @if (availableFlags != null)
+                        {
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var flag in availableFlags)
+                                {
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="flag_@flag.Id"
+                                               checked="@selectedFlagIds.Contains(flag.Id)"
+                                               @onchange="() => ToggleFlag(flag.Id)" />
+                                        <label class="form-check-label" for="flag_@flag.Id">
+                                            <span class="badge" style="background-color: @flag.Color">
+                                                <i class="bi @flag.IconClass me-1"></i>@flag.NameCs
+                                            </span>
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="d-flex justify-content-between">
+                <a href="/codelists/admin" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-lg me-1"></i> Zrušit
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i> @(IsNew ? "Vytvořit" : "Uložit")
+                </button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public long Id { get; set; }
+
+    private bool IsNew => Id == 0;
+
+    private CodelistRegistryModel model { get; set; } = new();
+    private List<Flag>? availableFlags;
+    private HashSet<long> selectedFlagIds = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        availableFlags = await DbContext.Flags.Where(f => f.Active).OrderBy(f => f.SortOrder).ToListAsync();
+
+        if (!IsNew)
+        {
+            var item = await DbContext.CodelistRegistry
+                .Include(c => c.Flags)
+                .FirstOrDefaultAsync(c => c.Id == Id);
+
+            if (item == null)
+            {
+                NavigationManager.NavigateTo("/codelists/admin");
+                return;
+            }
+
+            model = new CodelistRegistryModel
+            {
+                Code = item.Code,
+                NameCs = item.NameCs,
+                NameEn = item.NameEn,
+                DescriptionCs = item.DescriptionCs,
+                DescriptionEn = item.DescriptionEn,
+                WebUrl = item.WebUrl,
+                ApiUrl = item.ApiUrl,
+                IconClass = item.IconClass,
+                SortOrder = item.SortOrder
+            };
+
+            selectedFlagIds = item.Flags.Select(f => f.Id).ToHashSet();
+        }
+    }
+
+    private void ToggleFlag(long flagId)
+    {
+        if (selectedFlagIds.Contains(flagId))
+            selectedFlagIds.Remove(flagId);
+        else
+            selectedFlagIds.Add(flagId);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userName = authState.User.Identity?.Name ?? "unknown";
+
+        if (IsNew)
+        {
+            var item = new CodelistRegistry
+            {
+                Code = model.Code,
+                NameCs = model.NameCs,
+                NameEn = model.NameEn,
+                DescriptionCs = model.DescriptionCs,
+                DescriptionEn = model.DescriptionEn,
+                WebUrl = model.WebUrl,
+                ApiUrl = model.ApiUrl,
+                IconClass = model.IconClass,
+                SortOrder = model.SortOrder,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = userName
+            };
+
+            // Add selected flags
+            var flags = await DbContext.Flags.Where(f => selectedFlagIds.Contains(f.Id)).ToListAsync();
+            foreach (var flag in flags)
+            {
+                item.Flags.Add(flag);
+            }
+
+            DbContext.CodelistRegistry.Add(item);
+            await DbContext.SaveChangesAsync();
+            await AuditService.LogCreateAsync(item, item.Code, userName);
+        }
+        else
+        {
+            var item = await DbContext.CodelistRegistry
+                .Include(c => c.Flags)
+                .FirstOrDefaultAsync(c => c.Id == Id);
+
+            if (item != null)
+            {
+                // Store old values for audit
+                var oldCode = item.Code;
+
+                item.Code = model.Code;
+                item.NameCs = model.NameCs;
+                item.NameEn = model.NameEn;
+                item.DescriptionCs = model.DescriptionCs;
+                item.DescriptionEn = model.DescriptionEn;
+                item.WebUrl = model.WebUrl;
+                item.ApiUrl = model.ApiUrl;
+                item.IconClass = model.IconClass;
+                item.SortOrder = model.SortOrder;
+                item.UpdatedAt = DateTime.UtcNow;
+                item.UpdatedBy = userName;
+
+                // Update flags
+                item.Flags.Clear();
+                var flags = await DbContext.Flags.Where(f => selectedFlagIds.Contains(f.Id)).ToListAsync();
+                foreach (var flag in flags)
+                {
+                    item.Flags.Add(flag);
+                }
+
+                await DbContext.SaveChangesAsync();
+                await AuditService.LogUpdateAsync<CodelistRegistry>(item, item, item.Code, userName);
+            }
+        }
+
+        NavigationManager.NavigateTo("/codelists/admin");
+    }
+
+    private sealed class CodelistRegistryModel
+    {
+        [Required(ErrorMessage = "Kód je povinný")]
+        [StringLength(50, ErrorMessage = "Kód může mít maximálně 50 znaků")]
+        public string Code { get; set; } = "";
+
+        [Required(ErrorMessage = "Název (CZ) je povinný")]
+        [StringLength(100, ErrorMessage = "Název může mít maximálně 100 znaků")]
+        public string NameCs { get; set; } = "";
+
+        [Required(ErrorMessage = "Název (EN) je povinný")]
+        [StringLength(100, ErrorMessage = "Název může mít maximálně 100 znaků")]
+        public string NameEn { get; set; } = "";
+
+        public string? DescriptionCs { get; set; }
+        public string? DescriptionEn { get; set; }
+
+        [Required(ErrorMessage = "Web URL je povinná")]
+        [StringLength(100, ErrorMessage = "URL může mít maximálně 100 znaků")]
+        public string WebUrl { get; set; } = "";
+
+        [Required(ErrorMessage = "API URL je povinná")]
+        [StringLength(100, ErrorMessage = "URL může mít maximálně 100 znaků")]
+        public string ApiUrl { get; set; } = "";
+
+        [StringLength(50, ErrorMessage = "Ikona může mít maximálně 50 znaků")]
+        public string? IconClass { get; set; }
+
+        public int? SortOrder { get; set; }
+    }
+}

@@ -1,16 +1,19 @@
 @page "/admin/users"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.Localization
 @using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Resources
 @attribute [Authorize(Roles = "Admin")]
 @inject ApplicationDbContext DbContext
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>Správa uživatelů</PageTitle>
+<PageTitle>@L["user.title"]</PageTitle>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">
         <i class="bi bi-people me-2"></i>
-        Správa uživatelů
+        @L["user.title"]
     </h1>
 </div>
 
@@ -18,7 +21,7 @@
 {
     <div class="d-flex justify-content-center py-5">
         <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Načítání...</span>
+            <span class="visually-hidden">@L["common.loading"]</span>
         </div>
     </div>
 }
@@ -29,12 +32,12 @@ else
             <table class="table table-hover mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Uživatel</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Stav</th>
-                        <th>Vytvořeno</th>
-                        <th class="text-end">Akce</th>
+                        <th>@L["user.username"]</th>
+                        <th>@L["user.email"]</th>
+                        <th>@L["user.role"]</th>
+                        <th>@L["common.active"]</th>
+                        <th>@L["common.createdAt"]</th>
+                        <th class="text-end">@L["common.actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,19 +56,19 @@ else
                             <td>
                                 @if (user.Enabled)
                                 {
-                                    <span class="badge bg-success">Aktivní</span>
+                                    <span class="badge bg-success">@L["common.active"]</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger">Neaktivní</span>
+                                    <span class="badge bg-danger">@L["common.inactive"]</span>
                                 }
                             </td>
                             <td>@user.CreatedAt.ToString("dd.MM.yyyy")</td>
                             <td class="text-end">
-                                <a href="/admin/users/@user.Id" class="btn btn-sm btn-outline-primary" title="Detail">
+                                <a href="/admin/users/@user.Id" class="btn btn-sm btn-outline-primary" title="@L["common.detail"]">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <a href="/admin/users/@user.Id/edit" class="btn btn-sm btn-outline-secondary" title="Upravit">
+                                <a href="/admin/users/@user.Id/edit" class="btn btn-sm btn-outline-secondary" title="@L["common.edit"]">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                             </td>

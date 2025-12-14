@@ -1,5 +1,6 @@
 using LegislativeEnumsNew.Data;
 using LegislativeEnumsNew.Data.Entities;
+using LegislativeEnumsNew.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,8 @@ namespace LegislativeEnumsNew.Controllers.Api;
 
 [ApiController]
 [Route("api/voltage-levels")]
-[Produces("application/json")]
+[Produces("application/json", "application/xml")]
+[ApiFormatFilter]
 public class VoltageLevelsController : ControllerBase
 {
     private readonly ApplicationDbContext _context;

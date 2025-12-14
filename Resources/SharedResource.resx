@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- App -->
+  <data name="app.title" xml:space="preserve"><value>Legislativní číselníky</value></data>
+  <data name="app.description" xml:space="preserve"><value>Aplikace pro správu legislativních číselníků</value></data>
+
+  <!-- Navigation -->
+  <data name="nav.home" xml:space="preserve"><value>Domů</value></data>
+  <data name="nav.codelists" xml:space="preserve"><value>Číselníky</value></data>
+  <data name="nav.admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="nav.dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="nav.registry" xml:space="preserve"><value>Registr číselníků</value></data>
+  <data name="nav.flags" xml:space="preserve"><value>Štítky</value></data>
+  <data name="nav.users" xml:space="preserve"><value>Uživatelé</value></data>
+  <data name="nav.apikeys" xml:space="preserve"><value>API Klíče</value></data>
+  <data name="nav.logout" xml:space="preserve"><value>Odhlásit</value></data>
+  <data name="nav.login" xml:space="preserve"><value>Přihlásit</value></data>
+  <data name="nav.register" xml:space="preserve"><value>Registrace</value></data>
+  <data name="nav.profile" xml:space="preserve"><value>Profil</value></data>
+  <data name="nav.audit" xml:space="preserve"><value>Audit</value></data>
+
+  <!-- Common -->
+  <data name="common.save" xml:space="preserve"><value>Uložit</value></data>
+  <data name="common.cancel" xml:space="preserve"><value>Zrušit</value></data>
+  <data name="common.delete" xml:space="preserve"><value>Smazat</value></data>
+  <data name="common.edit" xml:space="preserve"><value>Upravit</value></data>
+  <data name="common.create" xml:space="preserve"><value>Vytvořit</value></data>
+  <data name="common.search" xml:space="preserve"><value>Hledat</value></data>
+  <data name="common.back" xml:space="preserve"><value>Zpět</value></data>
+  <data name="common.close" xml:space="preserve"><value>Zavřít</value></data>
+  <data name="common.actions" xml:space="preserve"><value>Akce</value></data>
+  <data name="common.yes" xml:space="preserve"><value>Ano</value></data>
+  <data name="common.no" xml:space="preserve"><value>Ne</value></data>
+  <data name="common.active" xml:space="preserve"><value>Aktivní</value></data>
+  <data name="common.inactive" xml:space="preserve"><value>Neaktivní</value></data>
+  <data name="common.loading" xml:space="preserve"><value>Načítání...</value></data>
+  <data name="common.refresh" xml:space="preserve"><value>Obnovit</value></data>
+  <data name="common.noData" xml:space="preserve"><value>Žádná data k dispozici</value></data>
+  <data name="common.all" xml:space="preserve"><value>Vše</value></data>
+  <data name="common.filter" xml:space="preserve"><value>Filtrovat</value></data>
+  <data name="common.detail" xml:space="preserve"><value>Detail</value></data>
+  <data name="common.viewAll" xml:space="preserve"><value>Zobrazit vše</value></data>
+  <data name="common.filter.validOnly" xml:space="preserve"><value>Pouze platné</value></data>
+  <data name="common.filter.showAll" xml:space="preserve"><value>Zobrazit vše</value></data>
+
+  <!-- Common fields -->
+  <data name="common.code" xml:space="preserve"><value>Kód</value></data>
+  <data name="common.name" xml:space="preserve"><value>Název</value></data>
+  <data name="common.nameCs" xml:space="preserve"><value>Název (česky)</value></data>
+  <data name="common.nameEn" xml:space="preserve"><value>Název (anglicky)</value></data>
+  <data name="common.description" xml:space="preserve"><value>Popis</value></data>
+  <data name="common.descriptionCs" xml:space="preserve"><value>Popis (česky)</value></data>
+  <data name="common.descriptionEn" xml:space="preserve"><value>Popis (anglicky)</value></data>
+  <data name="common.sortOrder" xml:space="preserve"><value>Pořadí</value></data>
+  <data name="common.validFrom" xml:space="preserve"><value>Platné od</value></data>
+  <data name="common.validTo" xml:space="preserve"><value>Platné do</value></data>
+  <data name="common.createdAt" xml:space="preserve"><value>Vytvořeno</value></data>
+  <data name="common.createdBy" xml:space="preserve"><value>Vytvořil</value></data>
+  <data name="common.updatedAt" xml:space="preserve"><value>Aktualizováno</value></data>
+  <data name="common.updatedBy" xml:space="preserve"><value>Aktualizoval</value></data>
+  <data name="common.basicInfo" xml:space="preserve"><value>Základní údaje</value></data>
+
+  <!-- Codelist Dashboard -->
+  <data name="codelist.dashboard.title" xml:space="preserve"><value>Přehled číselníků</value></data>
+  <data name="codelist.dashboard.view" xml:space="preserve"><value>Zobrazit</value></data>
+  <data name="codelist.dashboard.empty" xml:space="preserve"><value>Žádné číselníky k dispozici.</value></data>
+  <data name="codelist.dashboard.filterByFlag" xml:space="preserve"><value>Filtrovat podle:</value></data>
+  <data name="codelist.dashboard.allCodelists" xml:space="preserve"><value>Vše</value></data>
+
+  <!-- API Modal -->
+  <data name="codelist.api.yourKey" xml:space="preserve"><value>Váš API klíč</value></data>
+  <data name="codelist.api.noKey" xml:space="preserve"><value>Nemáte API klíč. Kontaktujte prosím administrátora.</value></data>
+  <data name="codelist.api.endpoint" xml:space="preserve"><value>API Endpoint</value></data>
+  <data name="codelist.api.format" xml:space="preserve"><value>Formát API</value></data>
+  <data name="codelist.api.curlExample" xml:space="preserve"><value>Příklad cURL</value></data>
+  <data name="codelist.api.tryIt" xml:space="preserve"><value>Vyzkoušet</value></data>
+  <data name="codelist.api.execute" xml:space="preserve"><value>Spustit</value></data>
+  <data name="codelist.api.response" xml:space="preserve"><value>Odpověď</value></data>
+
+  <!-- Codelist Registry -->
+  <data name="codelist.registry.title" xml:space="preserve"><value>Registr číselníků</value></data>
+  <data name="codelist.registry.create" xml:space="preserve"><value>Přidat číselník</value></data>
+  <data name="codelist.registry.edit" xml:space="preserve"><value>Upravit číselník</value></data>
+  <data name="codelist.registry.code" xml:space="preserve"><value>Kód</value></data>
+  <data name="codelist.registry.name" xml:space="preserve"><value>Název</value></data>
+  <data name="codelist.registry.description" xml:space="preserve"><value>Popis</value></data>
+  <data name="codelist.registry.webUrl" xml:space="preserve"><value>Web URL</value></data>
+  <data name="codelist.registry.apiUrl" xml:space="preserve"><value>API URL</value></data>
+  <data name="codelist.registry.iconClass" xml:space="preserve"><value>Ikona</value></data>
+  <data name="codelist.registry.sortOrder" xml:space="preserve"><value>Pořadí</value></data>
+  <data name="codelist.registry.active" xml:space="preserve"><value>Aktivní</value></data>
+  <data name="codelist.registry.flags" xml:space="preserve"><value>Štítky</value></data>
+
+  <!-- Flags -->
+  <data name="flag.title" xml:space="preserve"><value>Štítky</value></data>
+  <data name="flag.create" xml:space="preserve"><value>Vytvořit štítek</value></data>
+  <data name="flag.edit" xml:space="preserve"><value>Upravit štítek</value></data>
+  <data name="flag.code" xml:space="preserve"><value>Kód</value></data>
+  <data name="flag.name" xml:space="preserve"><value>Název</value></data>
+  <data name="flag.description" xml:space="preserve"><value>Popis</value></data>
+  <data name="flag.color" xml:space="preserve"><value>Barva</value></data>
+  <data name="flag.iconClass" xml:space="preserve"><value>Ikona</value></data>
+  <data name="flag.sortOrder" xml:space="preserve"><value>Pořadí</value></data>
+  <data name="flag.active" xml:space="preserve"><value>Aktivní</value></data>
+  <data name="flag.empty" xml:space="preserve"><value>Žádné štítky k dispozici.</value></data>
+
+  <!-- Voltage Levels -->
+  <data name="voltagelevel.title" xml:space="preserve"><value>Napěťové hladiny</value></data>
+  <data name="voltagelevel.create" xml:space="preserve"><value>Vytvořit napěťovou hladinu</value></data>
+  <data name="voltagelevel.edit" xml:space="preserve"><value>Upravit napěťovou hladinu</value></data>
+  <data name="voltagelevel.code" xml:space="preserve"><value>Kód</value></data>
+  <data name="voltagelevel.name" xml:space="preserve"><value>Název</value></data>
+  <data name="voltagelevel.voltageRange" xml:space="preserve"><value>Rozsah napětí</value></data>
+  <data name="voltagelevel.sortOrder" xml:space="preserve"><value>Pořadí</value></data>
+  <data name="voltagelevel.active" xml:space="preserve"><value>Aktivní</value></data>
+
+  <!-- Network Types -->
+  <data name="networktype.title" xml:space="preserve"><value>Typy sítí</value></data>
+  <data name="networktype.create" xml:space="preserve"><value>Vytvořit typ sítě</value></data>
+  <data name="networktype.edit" xml:space="preserve"><value>Upravit typ sítě</value></data>
+  <data name="networktype.code" xml:space="preserve"><value>Kód</value></data>
+  <data name="networktype.name" xml:space="preserve"><value>Název</value></data>
+  <data name="networktype.description" xml:space="preserve"><value>Popis</value></data>
+  <data name="networktype.sortOrder" xml:space="preserve"><value>Pořadí</value></data>
+  <data name="networktype.active" xml:space="preserve"><value>Aktivní</value></data>
+
+  <!-- Users -->
+  <data name="user.title" xml:space="preserve"><value>Uživatelé</value></data>
+  <data name="user.create" xml:space="preserve"><value>Vytvořit uživatele</value></data>
+  <data name="user.edit" xml:space="preserve"><value>Upravit uživatele</value></data>
+  <data name="user.username" xml:space="preserve"><value>Uživatelské jméno</value></data>
+  <data name="user.email" xml:space="preserve"><value>Email</value></data>
+  <data name="user.firstName" xml:space="preserve"><value>Jméno</value></data>
+  <data name="user.lastName" xml:space="preserve"><value>Příjmení</value></data>
+  <data name="user.password" xml:space="preserve"><value>Heslo</value></data>
+  <data name="user.newPassword" xml:space="preserve"><value>Nové heslo</value></data>
+  <data name="user.role" xml:space="preserve"><value>Role</value></data>
+  <data name="user.usagePlan" xml:space="preserve"><value>Tarif</value></data>
+  <data name="user.enabled" xml:space="preserve"><value>Aktivní</value></data>
+  <data name="user.createdAt" xml:space="preserve"><value>Vytvořen</value></data>
+  <data name="user.trialEndDate" xml:space="preserve"><value>Konec zkušební doby</value></data>
+  <data name="user.role.admin" xml:space="preserve"><value>Administrátor</value></data>
+  <data name="user.role.contributor" xml:space="preserve"><value>Přispěvatel</value></data>
+  <data name="user.role.reader" xml:space="preserve"><value>Čtenář</value></data>
+  <data name="user.newUsers" xml:space="preserve"><value>Noví uživatelé</value></data>
+  <data name="user.noNewUsers" xml:space="preserve"><value>Žádní noví uživatelé</value></data>
+
+  <!-- API Keys -->
+  <data name="apikey.title" xml:space="preserve"><value>API Klíče</value></data>
+  <data name="apikey.create" xml:space="preserve"><value>Vytvořit API klíč</value></data>
+  <data name="apikey.name" xml:space="preserve"><value>Název</value></data>
+  <data name="apikey.key" xml:space="preserve"><value>Klíč</value></data>
+  <data name="apikey.usagePlan" xml:space="preserve"><value>Tarif</value></data>
+  <data name="apikey.enabled" xml:space="preserve"><value>Aktivní</value></data>
+  <data name="apikey.created" xml:space="preserve"><value>Vytvořen</value></data>
+  <data name="apikey.expires" xml:space="preserve"><value>Platnost do</value></data>
+  <data name="apikey.plan.free" xml:space="preserve"><value>Zdarma</value></data>
+  <data name="apikey.plan.basic" xml:space="preserve"><value>Základní</value></data>
+  <data name="apikey.plan.premium" xml:space="preserve"><value>Premium</value></data>
+  <data name="apikey.plan.enterprise" xml:space="preserve"><value>Enterprise</value></data>
+
+  <!-- Admin Dashboard -->
+  <data name="admin.dashboard.title" xml:space="preserve"><value>Administrátorský panel</value></data>
+  <data name="admin.dashboard.totalUsers" xml:space="preserve"><value>Celkem uživatelů</value></data>
+  <data name="admin.dashboard.activeApiKeys" xml:space="preserve"><value>Aktivní API klíče</value></data>
+  <data name="admin.dashboard.requestsToday" xml:space="preserve"><value>Požadavků dnes</value></data>
+  <data name="admin.dashboard.requestsWeek" xml:space="preserve"><value>Požadavků tento týden</value></data>
+  <data name="admin.dashboard.requestsMonth" xml:space="preserve"><value>Požadavků tento měsíc</value></data>
+  <data name="admin.dashboard.requestsAllTime" xml:space="preserve"><value>Požadavků celkem</value></data>
+  <data name="admin.dashboard.dailyRequests" xml:space="preserve"><value>Denní požadavky (posledních 30 dní)</value></data>
+  <data name="admin.dashboard.topEndpoints" xml:space="preserve"><value>Nejčastější endpointy</value></data>
+  <data name="admin.dashboard.topUsers" xml:space="preserve"><value>Nejaktivnější uživatelé</value></data>
+  <data name="admin.dashboard.recentRequests" xml:space="preserve"><value>Nedávné požadavky</value></data>
+  <data name="admin.dashboard.endpoint" xml:space="preserve"><value>Endpoint</value></data>
+  <data name="admin.dashboard.requests" xml:space="preserve"><value>Požadavky</value></data>
+  <data name="admin.dashboard.avgTime" xml:space="preserve"><value>Prům. čas</value></data>
+  <data name="admin.dashboard.user" xml:space="preserve"><value>Uživatel</value></data>
+  <data name="admin.dashboard.email" xml:space="preserve"><value>Email</value></data>
+  <data name="admin.dashboard.time" xml:space="preserve"><value>Čas</value></data>
+  <data name="admin.dashboard.status" xml:space="preserve"><value>Stav</value></data>
+  <data name="admin.dashboard.responseTime" xml:space="preserve"><value>Doba odezvy</value></data>
+  <data name="admin.dashboard.ip" xml:space="preserve"><value>IP Adresa</value></data>
+  <data name="admin.dashboard.noData" xml:space="preserve"><value>Žádná data k dispozici</value></data>
+  <data name="admin.dashboard.responseFormat" xml:space="preserve"><value>Formát odpovědí (JSON vs XML)</value></data>
+  <data name="admin.dashboard.json" xml:space="preserve"><value>JSON</value></data>
+  <data name="admin.dashboard.xml" xml:space="preserve"><value>XML</value></data>
+  <data name="admin.dashboard.noFormatData" xml:space="preserve"><value>Zatím žádná data o formátech</value></data>
+  <data name="admin.dashboard.filter.all" xml:space="preserve"><value>Vše</value></data>
+  <data name="admin.dashboard.pager.page" xml:space="preserve"><value>Strana</value></data>
+  <data name="admin.dashboard.pager.of" xml:space="preserve"><value>z</value></data>
+  <data name="admin.dashboard.pager.showing" xml:space="preserve"><value>Zobrazeno</value></data>
+  <data name="admin.dashboard.recentChanges" xml:space="preserve"><value>Poslední změny</value></data>
+  <data name="admin.dashboard.noChanges" xml:space="preserve"><value>Žádné změny</value></data>
+  <data name="admin.dashboard.codelists" xml:space="preserve"><value>Číselníky</value></data>
+  <data name="admin.dashboard.auditRecords" xml:space="preserve"><value>Auditní záznamy</value></data>
+
+  <!-- Audit -->
+  <data name="audit.title" xml:space="preserve"><value>Auditní protokol</value></data>
+  <data name="audit.entityType" xml:space="preserve"><value>Typ entity</value></data>
+  <data name="audit.entityId" xml:space="preserve"><value>ID entity</value></data>
+  <data name="audit.entityCode" xml:space="preserve"><value>Kód entity</value></data>
+  <data name="audit.changeType" xml:space="preserve"><value>Typ změny</value></data>
+  <data name="audit.changedBy" xml:space="preserve"><value>Změnil</value></data>
+  <data name="audit.changedAt" xml:space="preserve"><value>Datum změny</value></data>
+  <data name="audit.oldValues" xml:space="preserve"><value>Původní hodnoty</value></data>
+  <data name="audit.newValues" xml:space="preserve"><value>Nové hodnoty</value></data>
+  <data name="audit.search" xml:space="preserve"><value>Hledat</value></data>
+  <data name="audit.searchPlaceholder" xml:space="preserve"><value>Hledat v kódu, hodnotách...</value></data>
+  <data name="audit.noRecords" xml:space="preserve"><value>Žádné záznamy nenalezeny</value></data>
+  <data name="audit.pagination" xml:space="preserve"><value>Strana {0} z {1} ({2} záznamů)</value></data>
+  <data name="audit.detail.title" xml:space="preserve"><value>Detail auditního záznamu</value></data>
+  <data name="audit.detail.info" xml:space="preserve"><value>Informace o změně</value></data>
+  <data name="audit.noOldValues" xml:space="preserve"><value>Žádné původní hodnoty</value></data>
+  <data name="audit.noNewValues" xml:space="preserve"><value>Žádné nové hodnoty</value></data>
+  <data name="audit.deletedValues" xml:space="preserve"><value>Smazané hodnoty</value></data>
+
+  <!-- Security / Login -->
+  <data name="security.login" xml:space="preserve"><value>Přihlášení</value></data>
+  <data name="security.username" xml:space="preserve"><value>Uživatelské jméno</value></data>
+  <data name="security.password" xml:space="preserve"><value>Heslo</value></data>
+  <data name="security.login.submit" xml:space="preserve"><value>Přihlásit se</value></data>
+  <data name="security.access.denied" xml:space="preserve"><value>Přístup odepřen</value></data>
+  <data name="security.authentication.failed" xml:space="preserve"><value>Ověření selhalo</value></data>
+  <data name="security.rememberMe" xml:space="preserve"><value>Zapamatovat si mě</value></data>
+  <data name="security.login.error" xml:space="preserve"><value>Neplatné přihlašovací údaje.</value></data>
+
+  <!-- Registration -->
+  <data name="registration.title" xml:space="preserve"><value>Registrace</value></data>
+  <data name="registration.username" xml:space="preserve"><value>Uživatelské jméno</value></data>
+  <data name="registration.email" xml:space="preserve"><value>E-mail</value></data>
+  <data name="registration.password" xml:space="preserve"><value>Heslo</value></data>
+  <data name="registration.password.hint" xml:space="preserve"><value>Minimálně 8 znaků</value></data>
+  <data name="registration.confirmPassword" xml:space="preserve"><value>Potvrzení hesla</value></data>
+  <data name="registration.usagePlan" xml:space="preserve"><value>Tarif</value></data>
+  <data name="registration.trial.info" xml:space="preserve"><value>Všechny nové registrace zahrnují bezplatné zkušební období 1 měsíc.</value></data>
+  <data name="registration.submit" xml:space="preserve"><value>Registrovat</value></data>
+  <data name="registration.haveAccount" xml:space="preserve"><value>Již máte účet?</value></data>
+  <data name="registration.login" xml:space="preserve"><value>Přihlásit se</value></data>
+  <data name="registration.noAccount" xml:space="preserve"><value>Nemáte účet?</value></data>
+  <data name="registration.register" xml:space="preserve"><value>Registrovat</value></data>
+  <data name="registration.success.title" xml:space="preserve"><value>Registrace úspěšná!</value></data>
+  <data name="registration.success.welcome" xml:space="preserve"><value>Vítejte, {0}! Váš účet byl úspěšně vytvořen.</value></data>
+  <data name="registration.success.accountDetails" xml:space="preserve"><value>Údaje o účtu</value></data>
+  <data name="registration.success.trialEnds" xml:space="preserve"><value>Zkušební doba končí</value></data>
+  <data name="registration.success.apiKey" xml:space="preserve"><value>Váš API klíč</value></data>
+  <data name="registration.success.apiKey.warning" xml:space="preserve"><value>Důležité!</value></data>
+  <data name="registration.success.apiKey.warningText" xml:space="preserve"><value>Uložte si tento API klíč nyní. Znovu ho neuvidíte!</value></data>
+  <data name="registration.success.copy" xml:space="preserve"><value>Kopírovat</value></data>
+  <data name="registration.success.copied" xml:space="preserve"><value>Zkopírováno do schránky!</value></data>
+  <data name="registration.success.howToUse" xml:space="preserve"><value>Jak používat API klíč</value></data>
+  <data name="registration.success.howToUseText" xml:space="preserve"><value>Přidejte API klíč do hlavičky požadavku:</value></data>
+  <data name="registration.success.example" xml:space="preserve"><value>Příklad curl požadavku:</value></data>
+  <data name="registration.success.login" xml:space="preserve"><value>Pokračovat na přihlášení</value></data>
+
+  <!-- Profile -->
+  <data name="profile.title" xml:space="preserve"><value>Můj profil</value></data>
+  <data name="profile.userInfo" xml:space="preserve"><value>Informace o uživateli</value></data>
+  <data name="profile.username" xml:space="preserve"><value>Uživatelské jméno</value></data>
+  <data name="profile.email" xml:space="preserve"><value>Email</value></data>
+  <data name="profile.role" xml:space="preserve"><value>Role</value></data>
+  <data name="profile.usagePlan" xml:space="preserve"><value>Tarif</value></data>
+  <data name="profile.trialEndDate" xml:space="preserve"><value>Konec zkušební doby</value></data>
+  <data name="profile.apiKeys" xml:space="preserve"><value>API klíče</value></data>
+  <data name="profile.noApiKeys" xml:space="preserve"><value>Nemáte žádné API klíče.</value></data>
+  <data name="profile.enabled" xml:space="preserve"><value>Aktivní</value></data>
+  <data name="profile.disabled" xml:space="preserve"><value>Neaktivní</value></data>
+  <data name="profile.expiresAt" xml:space="preserve"><value>Platnost do</value></data>
+  <data name="profile.regenerateApiKey" xml:space="preserve"><value>Vygenerovat nový API klíč</value></data>
+  <data name="profile.regenerateWarning" xml:space="preserve"><value>Upozornění: Vygenerování nového API klíče zneplatní starý klíč.</value></data>
+  <data name="profile.newApiKeyGenerated" xml:space="preserve"><value>Nový API klíč vygenerován!</value></data>
+  <data name="profile.copyWarning" xml:space="preserve"><value>Zkopírujte si nový API klíč nyní. Znovu ho neuvidíte!</value></data>
+  <data name="profile.copy" xml:space="preserve"><value>Kopírovat</value></data>
+  <data name="profile.phoneNumber" xml:space="preserve"><value>Telefonní číslo</value></data>
+  <data name="profile.save" xml:space="preserve"><value>Uložit změny</value></data>
+  <data name="profile.saved" xml:space="preserve"><value>Profil byl úspěšně uložen.</value></data>
+  <data name="profile.phoneError" xml:space="preserve"><value>Chyba při ukládání telefonního čísla.</value></data>
+  <data name="profile.emailVerified" xml:space="preserve"><value>Ověřeno</value></data>
+  <data name="profile.emailNotVerified" xml:space="preserve"><value>Neověřeno</value></data>
+  <data name="profile.sendVerification" xml:space="preserve"><value>Odeslat ověřovací email</value></data>
+  <data name="profile.verificationSent" xml:space="preserve"><value>Ověřovací email odeslán. Zkontrolujte svou poštu.</value></data>
+  <data name="profile.changeEmail" xml:space="preserve"><value>Změnit email</value></data>
+  <data name="profile.newEmail" xml:space="preserve"><value>Nový email</value></data>
+  <data name="profile.emailUnchanged" xml:space="preserve"><value>Váš email zůstává nezměněn.</value></data>
+  <data name="profile.emailChangeSent" xml:space="preserve"><value>Odkaz pro potvrzení změny emailu byl odeslán. Zkontrolujte svou poštu.</value></data>
+  <data name="profile.changePassword" xml:space="preserve"><value>Změnit heslo</value></data>
+  <data name="profile.currentPassword" xml:space="preserve"><value>Současné heslo</value></data>
+  <data name="profile.newPassword" xml:space="preserve"><value>Nové heslo</value></data>
+  <data name="profile.confirmPassword" xml:space="preserve"><value>Potvrzení hesla</value></data>
+  <data name="profile.updatePassword" xml:space="preserve"><value>Změnit heslo</value></data>
+  <data name="profile.passwordChanged" xml:space="preserve"><value>Vaše heslo bylo úspěšně změněno.</value></data>
+  <data name="profile.personalData" xml:space="preserve"><value>Osobní údaje</value></data>
+  <data name="profile.personalDataInfo" xml:space="preserve"><value>Váš účet obsahuje osobní údaje, které jste nám poskytli. Na této stránce si můžete tyto údaje stáhnout nebo smazat.</value></data>
+  <data name="profile.downloadData" xml:space="preserve"><value>Stáhnout moje data</value></data>
+  <data name="profile.deleteAccount" xml:space="preserve"><value>Smazat účet</value></data>
+  <data name="profile.deleteWarning" xml:space="preserve"><value>Smazání účtu je nevratné. Všechna vaše data budou trvale odstraněna.</value></data>
+  <data name="profile.confirmDelete" xml:space="preserve"><value>Ano, smazat můj účet</value></data>
+  <data name="profile.incorrectPassword" xml:space="preserve"><value>Nesprávné heslo.</value></data>
+  <data name="profile.accountDeleted" xml:space="preserve"><value>Váš účet byl smazán.</value></data>
+  <data name="profile.registeredAt" xml:space="preserve"><value>Registrován</value></data>
+  <data name="profile.lastLogin" xml:space="preserve"><value>Poslední přihlášení</value></data>
+
+  <!-- Validation -->
+  <data name="validation.required" xml:space="preserve"><value>{0} je povinný</value></data>
+  <data name="validation.email.invalid" xml:space="preserve"><value>Neplatná emailová adresa</value></data>
+  <data name="validation.code.exists" xml:space="preserve"><value>Kód již existuje</value></data>
+  <data name="validation.date.invalid" xml:space="preserve"><value>Neplatné datum</value></data>
+  <data name="validation.password.size" xml:space="preserve"><value>Heslo musí mít 8-100 znaků</value></data>
+  <data name="validation.password.mismatch" xml:space="preserve"><value>Hesla se neshodují</value></data>
+  <data name="validation.username.size" xml:space="preserve"><value>Uživatelské jméno musí mít 3-50 znaků</value></data>
+
+  <!-- Messages -->
+  <data name="message.success.created" xml:space="preserve"><value>{0} byl úspěšně vytvořen</value></data>
+  <data name="message.success.updated" xml:space="preserve"><value>{0} byl úspěšně aktualizován</value></data>
+  <data name="message.success.deleted" xml:space="preserve"><value>{0} byl úspěšně smazán</value></data>
+  <data name="message.error.notfound" xml:space="preserve"><value>{0} nenalezen</value></data>
+  <data name="message.error.unknown" xml:space="preserve"><value>Nastala neznámá chyba</value></data>
+  <data name="message.error.ratelimit" xml:space="preserve"><value>Překročen limit požadavků</value></data>
+
+  <!-- Notifications -->
+  <data name="notification.title" xml:space="preserve"><value>Oznámení</value></data>
+  <data name="notification.empty" xml:space="preserve"><value>Žádná oznámení</value></data>
+  <data name="notification.clearAll" xml:space="preserve"><value>Smazat vše</value></data>
+  <data name="notification.action.create" xml:space="preserve"><value>vytvořen</value></data>
+  <data name="notification.action.insert" xml:space="preserve"><value>přidán</value></data>
+  <data name="notification.action.update" xml:space="preserve"><value>upraven</value></data>
+  <data name="notification.action.delete" xml:space="preserve"><value>smazán</value></data>
+  <data name="notification.by" xml:space="preserve"><value>uživatelem</value></data>
+  <data name="notification.justNow" xml:space="preserve"><value>Právě teď</value></data>
+  <data name="notification.minutesAgo" xml:space="preserve"><value>min</value></data>
+  <data name="notification.hoursAgo" xml:space="preserve"><value>hod</value></data>
+
+  <!-- Usage Plans -->
+  <data name="usageplan.PER_MONTH" xml:space="preserve"><value>Měsíčně</value></data>
+  <data name="usageplan.PER_YEAR" xml:space="preserve"><value>Ročně</value></data>
+  <data name="usageplan.PER_REQUEST" xml:space="preserve"><value>Za požadavek</value></data>
+
+  <!-- ČÚZK Common -->
+  <data name="cuzk.abbreviation" xml:space="preserve"><value>Zkratka</value></data>
+  <data name="cuzk.landParcelTypeCode" xml:space="preserve"><value>Kód druhu pozemku</value></data>
+  <data name="cuzk.agriculturalLand" xml:space="preserve"><value>Zemědělská půda</value></data>
+  <data name="cuzk.buildingParcel" xml:space="preserve"><value>Stavební parcela</value></data>
+  <data name="cuzk.mandatoryLandProtection" xml:space="preserve"><value>Povinná ochrana půdy</value></data>
+  <data name="cuzk.mandatoryLandUse" xml:space="preserve"><value>Povinné využití půdy</value></data>
+  <data name="cuzk.entryCode" xml:space="preserve"><value>Vstupní kód</value></data>
+  <data name="cuzk.attributes" xml:space="preserve"><value>Atributy ČÚZK</value></data>
+  <data name="cuzk.validity" xml:space="preserve"><value>Platnost</value></data>
+  <data name="cuzk.validFrom" xml:space="preserve"><value>Platné od</value></data>
+  <data name="cuzk.validTo" xml:space="preserve"><value>Platné do</value></data>
+
+  <!-- ČÚZK - Land Types -->
+  <data name="cuzk.landtype.title" xml:space="preserve"><value>Druhy pozemků (ČÚZK)</value></data>
+  <data name="cuzk.landtype.create" xml:space="preserve"><value>Vytvořit druh pozemku</value></data>
+  <data name="cuzk.landtype.edit" xml:space="preserve"><value>Upravit druh pozemku</value></data>
+
+  <!-- ČÚZK - Land Uses -->
+  <data name="cuzk.landuse.title" xml:space="preserve"><value>Využití pozemků (ČÚZK)</value></data>
+  <data name="cuzk.landuse.create" xml:space="preserve"><value>Vytvořit využití pozemku</value></data>
+  <data name="cuzk.landuse.edit" xml:space="preserve"><value>Upravit využití pozemku</value></data>
+
+  <!-- ČÚZK - Building Types -->
+  <data name="cuzk.buildingtype.title" xml:space="preserve"><value>Typy budov (ČÚZK)</value></data>
+  <data name="cuzk.buildingtype.create" xml:space="preserve"><value>Vytvořit typ budovy</value></data>
+  <data name="cuzk.buildingtype.edit" xml:space="preserve"><value>Upravit typ budovy</value></data>
+
+  <!-- ČÚZK - Building Uses -->
+  <data name="cuzk.buildinguse.title" xml:space="preserve"><value>Využití budov (ČÚZK)</value></data>
+  <data name="cuzk.buildinguse.create" xml:space="preserve"><value>Vytvořit využití budovy</value></data>
+  <data name="cuzk.buildinguse.edit" xml:space="preserve"><value>Upravit využití budovy</value></data>
+
+  <!-- ČÚZK - Land Type Uses -->
+  <data name="cuzk.landtypeuse.title" xml:space="preserve"><value>Mapování druhu pozemku (ČÚZK)</value></data>
+  <data name="cuzk.landtypeuse.create" xml:space="preserve"><value>Vytvořit mapování</value></data>
+  <data name="cuzk.landtypeuse.edit" xml:space="preserve"><value>Upravit mapování</value></data>
+  <data name="cuzk.landTypeCode" xml:space="preserve"><value>Kód druhu pozemku</value></data>
+  <data name="cuzk.landUseCode" xml:space="preserve"><value>Kód využití pozemku</value></data>
+
+  <!-- ČÚZK - Building Type Uses -->
+  <data name="cuzk.buildingtypeuse.title" xml:space="preserve"><value>Mapování typu budovy (ČÚZK)</value></data>
+  <data name="cuzk.buildingtypeuse.create" xml:space="preserve"><value>Vytvořit mapování</value></data>
+  <data name="cuzk.buildingtypeuse.edit" xml:space="preserve"><value>Upravit mapování</value></data>
+  <data name="cuzk.buildingTypeCode" xml:space="preserve"><value>Kód typu budovy</value></data>
+  <data name="cuzk.buildingUseCode" xml:space="preserve"><value>Kód využití budovy</value></data>
+
+  <!-- ČÚZK - Unit Types -->
+  <data name="cuzk.unittype.title" xml:space="preserve"><value>Typy jednotek (ČÚZK)</value></data>
+  <data name="cuzk.unittype.create" xml:space="preserve"><value>Vytvořit typ jednotky</value></data>
+  <data name="cuzk.unittype.edit" xml:space="preserve"><value>Upravit typ jednotky</value></data>
+  <data name="cuzk.civilCode" xml:space="preserve"><value>Občanský zákoník</value></data>
+
+  <!-- ČÚZK - Unit Uses -->
+  <data name="cuzk.unituse.title" xml:space="preserve"><value>Využití jednotek (ČÚZK)</value></data>
+  <data name="cuzk.unituse.create" xml:space="preserve"><value>Vytvořit využití jednotky</value></data>
+  <data name="cuzk.unituse.edit" xml:space="preserve"><value>Upravit využití jednotky</value></data>
+
+  <!-- ČÚZK - Property Protection Types -->
+  <data name="cuzk.propertyprotectiontype.title" xml:space="preserve"><value>Typy ochrany nemovitostí (ČÚZK)</value></data>
+  <data name="cuzk.propertyprotectiontype.create" xml:space="preserve"><value>Vytvořit typ ochrany</value></data>
+  <data name="cuzk.propertyprotectiontype.edit" xml:space="preserve"><value>Upravit typ ochrany</value></data>
+
+  <!-- ČÚZK - Property Protections -->
+  <data name="cuzk.propertyprotection.title" xml:space="preserve"><value>Ochrany nemovitostí (ČÚZK)</value></data>
+  <data name="cuzk.propertyprotection.create" xml:space="preserve"><value>Vytvořit ochranu</value></data>
+  <data name="cuzk.propertyprotection.edit" xml:space="preserve"><value>Upravit ochranu</value></data>
+  <data name="cuzk.protectionTypeCode" xml:space="preserve"><value>Kód typu ochrany</value></data>
+  <data name="cuzk.appliesTo" xml:space="preserve"><value>Platí pro</value></data>
+  <data name="cuzk.appliesToLand" xml:space="preserve"><value>Pozemek</value></data>
+  <data name="cuzk.appliesToBuilding" xml:space="preserve"><value>Budova</value></data>
+  <data name="cuzk.appliesToUnit" xml:space="preserve"><value>Jednotka</value></data>
+  <data name="cuzk.appliesToBuildingRight" xml:space="preserve"><value>Právo stavby</value></data>
+
+  <!-- ČÚZK - Area Determinations -->
+  <data name="cuzk.areadetermination.title" xml:space="preserve"><value>Způsoby určení výměry (ČÚZK)</value></data>
+  <data name="cuzk.areadetermination.create" xml:space="preserve"><value>Vytvořit způsob určení výměry</value></data>
+  <data name="cuzk.areadetermination.edit" xml:space="preserve"><value>Upravit způsob určení výměry</value></data>
+
+  <!-- ČÚZK - Soil Ecological Units -->
+  <data name="cuzk.soilecologicalunit.title" xml:space="preserve"><value>Bonitované půdně ekologické jednotky - BPEJ (ČÚZK)</value></data>
+  <data name="cuzk.soilecologicalunit.create" xml:space="preserve"><value>Vytvořit BPEJ</value></data>
+  <data name="cuzk.soilecologicalunit.edit" xml:space="preserve"><value>Upravit BPEJ</value></data>
+  <data name="cuzk.price" xml:space="preserve"><value>Cena</value></data>
+  <data name="cuzk.detailedDescription" xml:space="preserve"><value>Podrobný popis</value></data>
+
+  <!-- ČÚZK - Simplified Parcel Sources -->
+  <data name="cuzk.simplifiedparcelsource.title" xml:space="preserve"><value>Zdroje parcel zjednodušené evidence (ČÚZK)</value></data>
+  <data name="cuzk.simplifiedparcelsource.create" xml:space="preserve"><value>Vytvořit zdroj</value></data>
+  <data name="cuzk.simplifiedparcelsource.edit" xml:space="preserve"><value>Upravit zdroj</value></data>
+
+  <!-- ČÚZK - Building Right Purposes -->
+  <data name="cuzk.buildingrightpurpose.title" xml:space="preserve"><value>Účely práva stavby (ČÚZK)</value></data>
+  <data name="cuzk.buildingrightpurpose.create" xml:space="preserve"><value>Vytvořit účel</value></data>
+  <data name="cuzk.buildingrightpurpose.edit" xml:space="preserve"><value>Upravit účel</value></data>
+
+  <!-- KSO -->
+  <data name="kso.title" xml:space="preserve"><value>Klasifikace stavebních objektů (KSO)</value></data>
+  <data name="kso.create" xml:space="preserve"><value>Vytvořit klasifikaci</value></data>
+  <data name="kso.edit" xml:space="preserve"><value>Upravit klasifikaci</value></data>
+  <data name="kso.code" xml:space="preserve"><value>Kód</value></data>
+  <data name="kso.codeHelp" xml:space="preserve"><value>např. 801, 801.1, 801.11, 801.11.1</value></data>
+  <data name="kso.name" xml:space="preserve"><value>Název</value></data>
+  <data name="kso.nameCs" xml:space="preserve"><value>Název (česky)</value></data>
+  <data name="kso.nameEn" xml:space="preserve"><value>Název (anglicky)</value></data>
+  <data name="kso.descriptionCs" xml:space="preserve"><value>Popis (česky)</value></data>
+  <data name="kso.descriptionEn" xml:space="preserve"><value>Popis (anglicky)</value></data>
+  <data name="kso.level" xml:space="preserve"><value>Úroveň</value></data>
+  <data name="kso.level1" xml:space="preserve"><value>1 - Podskupina (např. 801)</value></data>
+  <data name="kso.level2" xml:space="preserve"><value>2 - Oddíl (např. 801.1)</value></data>
+  <data name="kso.level3" xml:space="preserve"><value>3 - Pododdíl (např. 801.11)</value></data>
+  <data name="kso.level4" xml:space="preserve"><value>4 - Konstrukčně materiálová charakteristika (např. 801.11.1)</value></data>
+  <data name="kso.parent" xml:space="preserve"><value>Nadřazená položka</value></data>
+  <data name="kso.noParent" xml:space="preserve"><value>-- Bez nadřazené --</value></data>
+  <data name="kso.sortOrder" xml:space="preserve"><value>Pořadí</value></data>
+  <data name="kso.active" xml:space="preserve"><value>Aktivní</value></data>
+  <data name="kso.treeView" xml:space="preserve"><value>Stromové zobrazení</value></data>
+  <data name="kso.listView" xml:space="preserve"><value>Seznam</value></data>
+  <data name="kso.allItems" xml:space="preserve"><value>Všechny položky</value></data>
+  <data name="kso.allLevels" xml:space="preserve"><value>Vše</value></data>
+  <data name="kso.filterByLevel" xml:space="preserve"><value>Filtrovat podle úrovně:</value></data>
+  <data name="kso.showChildren" xml:space="preserve"><value>Zobrazit potomky</value></data>
+  <data name="kso.empty" xml:space="preserve"><value>Žádné položky nenalezeny.</value></data>
+
+  <!-- Language -->
+  <data name="language.switch" xml:space="preserve"><value>English</value></data>
+  <data name="language.current" xml:space="preserve"><value>Čeština</value></data>
+</root>

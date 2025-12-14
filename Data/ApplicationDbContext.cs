@@ -13,6 +13,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
     public DbSet<ApiUsage> ApiUsages => Set<ApiUsage>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<Flag> Flags => Set<Flag>();
     public DbSet<CodelistRegistry> CodelistRegistry => Set<CodelistRegistry>();
     public DbSet<VoltageLevel> VoltageLevels => Set<VoltageLevel>();

@@ -1,5 +1,6 @@
 using LegislativeEnumsNew.Data;
 using LegislativeEnumsNew.Data.Entities.Cuzk;
+using LegislativeEnumsNew.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,8 @@ namespace LegislativeEnumsNew.Controllers.Api;
 
 [ApiController]
 [Route("api/cuzk/building-types")]
-[Produces("application/json")]
+[Produces("application/json", "application/xml")]
+[ApiFormatFilter]
 public class CuzkBuildingTypesController : ControllerBase
 {
     private readonly ApplicationDbContext _context;

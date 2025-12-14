@@ -1,0 +1,246 @@
+@using Microsoft.Extensions.Localization
+@using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Data.Entities
+@using LegislativeEnumsNew.Resources
+@using LegislativeEnumsNew.Services
+@using Microsoft.EntityFrameworkCore
+@inject IStringLocalizer<SharedResource> L
+@inject IServiceScopeFactory ScopeFactory
+@inject NotificationBroadcaster Broadcaster
+@implements IDisposable
+
+<div class="nav-item dropdown">
+    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" @onclick="MarkAsRead">
+        <i class="bi bi-bell"></i>
+        @if (unreadCount > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-badge">
+                @(unreadCount > 99 ? "99+" : unreadCount.ToString())
+            </span>
+        }
+    </a>
+    <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0" style="width: 360px; max-height: 480px;">
+        <div class="dropdown-header d-flex justify-content-between align-items-center py-2 px-3 border-bottom">
+            <span class="fw-semibold">@L["notification.title"]</span>
+            @if (notifications.Any())
+            {
+                <button class="btn btn-link btn-sm text-muted p-0" @onclick="ClearAll">
+                    @L["notification.clearAll"]
+                </button>
+            }
+        </div>
+        <div class="notification-list" style="max-height: 380px; overflow-y: auto;">
+            @if (!notifications.Any())
+            {
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-bell-slash fs-3 d-block mb-2"></i>
+                    @L["notification.empty"]
+                </div>
+            }
+            else
+            {
+                @foreach (var notification in notifications)
+                {
+                    <div class="dropdown-item notification-item px-3 py-2 border-bottom @GetNotificationClass(notification)">
+                        <div class="d-flex align-items-start">
+                            <div class="notification-icon me-2">
+                                <i class="bi @GetChangeIcon(notification.ChangeType) @GetChangeColor(notification.ChangeType)"></i>
+                            </div>
+                            <div class="flex-grow-1 min-width-0">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <strong class="text-truncate me-2">@notification.EntityType</strong>
+                                    <small class="text-muted text-nowrap">@GetRelativeTime(notification.CreatedAt)</small>
+                                </div>
+                                <div class="small text-muted text-truncate">
+                                    @if (!string.IsNullOrEmpty(notification.EntityCode))
+                                    {
+                                        <span class="badge bg-secondary me-1">@notification.EntityCode</span>
+                                    }
+                                    @L[$"notification.action.{notification.ChangeType.ToString().ToLower()}"]
+                                    @L["notification.by"] @notification.ChangedBy
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .notification-badge {
+        font-size: 0.65rem;
+        padding: 0.2em 0.45em;
+    }
+    .notification-dropdown {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    .notification-item {
+        transition: background-color 0.15s ease;
+        cursor: default;
+    }
+    .notification-item:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+    .notification-item.unread {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+    .notification-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .min-width-0 {
+        min-width: 0;
+    }
+</style>
+
+@code {
+    private List<Notification> notifications = new();
+    private int unreadCount = 0;
+    private DateTime lastReadTime = DateTime.UtcNow.AddHours(-24);
+    private string? clientId;
+    private CancellationTokenSource? cts;
+    private Timer? refreshTimer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadNotificationsAsync();
+
+        // Subscribe to SSE broadcaster
+        clientId = Broadcaster.Subscribe();
+
+        // Start background task to listen for new notifications
+        cts = new CancellationTokenSource();
+        _ = ListenForNotificationsAsync(cts.Token);
+
+        // Refresh every 30 seconds as fallback
+        refreshTimer = new Timer(async _ => await RefreshAsync(), null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
+    }
+
+    private async Task LoadNotificationsAsync()
+    {
+        using var scope = ScopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        notifications = await context.Notifications
+            .OrderByDescending(n => n.CreatedAt)
+            .Take(20)
+            .ToListAsync();
+
+        unreadCount = notifications.Count(n => n.CreatedAt > lastReadTime);
+    }
+
+    private async Task ListenForNotificationsAsync(CancellationToken cancellationToken)
+    {
+        if (clientId == null) return;
+
+        var reader = Broadcaster.GetReader(clientId);
+        if (reader == null) return;
+
+        try
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (await reader.WaitToReadAsync(cancellationToken))
+                {
+                    while (reader.TryRead(out var dto))
+                    {
+                        var notification = new Notification
+                        {
+                            Id = dto.Id,
+                            EntityType = dto.EntityType,
+                            EntityId = dto.EntityId,
+                            EntityCode = dto.EntityCode,
+                            ChangeType = Enum.Parse<ChangeType>(dto.ChangeType),
+                            ChangedBy = dto.ChangedBy,
+                            CreatedAt = dto.CreatedAt,
+                            Message = dto.Message
+                        };
+
+                        // Add to beginning of list
+                        notifications.Insert(0, notification);
+                        if (notifications.Count > 20)
+                            notifications.RemoveAt(notifications.Count - 1);
+
+                        unreadCount++;
+                        await InvokeAsync(StateHasChanged);
+                    }
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when disposed
+        }
+    }
+
+    private async Task RefreshAsync()
+    {
+        await LoadNotificationsAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void MarkAsRead()
+    {
+        lastReadTime = DateTime.UtcNow;
+        unreadCount = 0;
+    }
+
+    private async Task ClearAll()
+    {
+        notifications.Clear();
+        unreadCount = 0;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private string GetNotificationClass(Notification notification)
+    {
+        return notification.CreatedAt > lastReadTime ? "unread" : "";
+    }
+
+    private string GetChangeIcon(ChangeType changeType) => changeType switch
+    {
+        ChangeType.Create => "bi-plus-circle-fill",
+        ChangeType.Update => "bi-pencil-fill",
+        ChangeType.Delete => "bi-trash-fill",
+        _ => "bi-info-circle-fill"
+    };
+
+    private string GetChangeColor(ChangeType changeType) => changeType switch
+    {
+        ChangeType.Create => "text-success",
+        ChangeType.Update => "text-primary",
+        ChangeType.Delete => "text-danger",
+        _ => "text-secondary"
+    };
+
+    private string GetRelativeTime(DateTime dateTime)
+    {
+        var diff = DateTime.UtcNow - dateTime;
+
+        if (diff.TotalMinutes < 1)
+            return L["notification.justNow"];
+        if (diff.TotalMinutes < 60)
+            return $"{(int)diff.TotalMinutes} {L["notification.minutesAgo"]}";
+        if (diff.TotalHours < 24)
+            return $"{(int)diff.TotalHours} {L["notification.hoursAgo"]}";
+
+        return dateTime.ToString("d");
+    }
+
+    public void Dispose()
+    {
+        cts?.Cancel();
+        cts?.Dispose();
+        refreshTimer?.Dispose();
+
+        if (clientId != null)
+        {
+            Broadcaster.Unsubscribe(clientId);
+        }
+    }
+}

@@ -216,6 +216,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb2RlbGlzdHNcUmVnaXN0cnkucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/projekty.net/LegislativeEnumsNew/Components/Pages/Codelists/RegistryEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb2RlbGlzdHNcUmVnaXN0cnlFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/projekty.net/LegislativeEnumsNew/Components/Pages/Codelists/VoltageLevelDetail.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb2RlbGlzdHNcVm9sdGFnZUxldmVsRGV0YWlsLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -298,6 +302,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/projekty.net/LegislativeEnumsNew/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/projekty.net/LegislativeEnumsNew/Components/Shared/CultureSelector.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ3VsdHVyZVNlbGVjdG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/projekty.net/LegislativeEnumsNew/Components/Shared/NotificationDropdown.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTm90aWZpY2F0aW9uRHJvcGRvd24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/projekty.net/LegislativeEnumsNew/Components/_Imports.razor]

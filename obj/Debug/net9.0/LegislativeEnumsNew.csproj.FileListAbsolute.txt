@@ -7,6 +7,7 @@ C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\LegislativeEnumsNew.deps.js
 C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\LegislativeEnumsNew.runtimeconfig.json
 C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\LegislativeEnumsNew.dll
 C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\LegislativeEnumsNew.pdb
+C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\en\LegislativeEnumsNew.resources.dll
 C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\AutoMapper.dll
 C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\Azure.Core.dll
@@ -176,16 +177,23 @@ C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\runtimes\win\lib\net6.0\Sys
 C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\projekty.net\LegislativeEnumsNew\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.csproj.AssemblyReference.cache
+C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.Resources.SharedResource.resources
+C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.Resources.SharedResource.en.resources
+C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.csproj.GenerateResource.cache
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.GeneratedMSBuildEditorConfig.editorconfig
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.AssemblyInfoInputs.cache
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.AssemblyInfo.cs
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.csproj.CoreCompileInputs.cache
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.MvcApplicationPartsAssemblyInfo.cs
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.MvcApplicationPartsAssemblyInfo.cache
+C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.sourcelink.json
+C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\en\LegislativeEnumsNew.resources.cs
+C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\en\LegislativeEnumsNew.resources.dll
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\scopedcss\Components\Layout\MainLayout.razor.rz.scp.css
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\scopedcss\Components\Layout\NavMenu.razor.rz.scp.css
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\scopedcss\bundle\LegislativeEnumsNew.styles.css
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\scopedcss\projectbundle\LegislativeEnumsNew.bundle.scp.css
+C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\compressed\jlne6w1r98-5yqqhb9rrt.gz
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\compressed\akh115c6ci-bqjiyaj88i.gz
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\compressed\d2h5jt1gke-c2jlpeoesf.gz
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\compressed\iwqu5jnxp3-erw9l3u2r3.gz
@@ -242,4 +250,4 @@ C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\refint\LegislativeEnumsNew.
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.pdb
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\LegislativeEnumsNew.genruntimeconfig.cache
 C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\ref\LegislativeEnumsNew.dll
-C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\compressed\jlne6w1r98-5yqqhb9rrt.gz
+C:\projekty.net\LegislativeEnumsNew\obj\Debug\net9.0\compressed\aqs5xyvcq8-72uhj75l19.gz

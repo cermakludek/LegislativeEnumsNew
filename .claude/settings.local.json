@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build:*)",
+      "Bash(dotnet run:*)",
+      "Bash(curl:*)",
+      "Bash(dir /s /b C:projektylegislative-enums*.properties)",
+      "Bash(dir /s /b C:projektylegislative-enums*dashboard*)",
+      "Bash(taskkill:*)",
+      "Bash(dir \"C:\\projekty.net\\LegislativeEnumsNew\\Resources\")",
+      "Bash(dotnet clean:*)",
+      "Bash(for:*)",
+      "Bash(do curl -s http://localhost:5045/api/cuzk/building-types)",
+      "Bash(done)",
+      "Bash(dir /s /b \"C:\\projekty.net\\LegislativeEnumsNew\\Controllers\\Api\")",
+      "Bash(dotnet ef migrations:*)",
+      "Bash(comm:*)",
+      "Bash(comm -13:*)"
+    ]
+  }
+}

@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="0" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+
+  <!-- App -->
+  <data name="app.title"><value>Legislative Enumlists</value></data>
+  <data name="app.description"><value>Application for legislative enumlists management</value></data>
+
+  <!-- Navigation -->
+  <data name="nav.home"><value>Home</value></data>
+  <data name="nav.codelists"><value>Enumlists</value></data>
+  <data name="nav.admin"><value>Admin</value></data>
+  <data name="nav.dashboard"><value>Dashboard</value></data>
+  <data name="nav.registry"><value>Enumlist Registry</value></data>
+  <data name="nav.flags"><value>Flags</value></data>
+  <data name="nav.users"><value>Users</value></data>
+  <data name="nav.apikeys"><value>API Keys</value></data>
+  <data name="nav.logout"><value>Logout</value></data>
+  <data name="nav.login"><value>Login</value></data>
+  <data name="nav.register"><value>Register</value></data>
+  <data name="nav.profile"><value>Profile</value></data>
+  <data name="nav.audit"><value>Audit</value></data>
+
+  <!-- Common -->
+  <data name="common.save"><value>Save</value></data>
+  <data name="common.cancel"><value>Cancel</value></data>
+  <data name="common.delete"><value>Delete</value></data>
+  <data name="common.edit"><value>Edit</value></data>
+  <data name="common.create"><value>Create</value></data>
+  <data name="common.search"><value>Search</value></data>
+  <data name="common.back"><value>Back</value></data>
+  <data name="common.close"><value>Close</value></data>
+  <data name="common.actions"><value>Actions</value></data>
+  <data name="common.yes"><value>Yes</value></data>
+  <data name="common.no"><value>No</value></data>
+  <data name="common.active"><value>Active</value></data>
+  <data name="common.inactive"><value>Inactive</value></data>
+  <data name="common.loading"><value>Loading...</value></data>
+  <data name="common.refresh"><value>Refresh</value></data>
+  <data name="common.noData"><value>No data available</value></data>
+  <data name="common.all"><value>All</value></data>
+  <data name="common.filter"><value>Filter</value></data>
+  <data name="common.detail"><value>Detail</value></data>
+  <data name="common.viewAll"><value>View all</value></data>
+  <data name="common.filter.validOnly"><value>Valid only</value></data>
+  <data name="common.filter.showAll"><value>Show all</value></data>
+
+  <!-- Common fields -->
+  <data name="common.code"><value>Code</value></data>
+  <data name="common.name"><value>Name</value></data>
+  <data name="common.nameCs"><value>Name (Czech)</value></data>
+  <data name="common.nameEn"><value>Name (English)</value></data>
+  <data name="common.description"><value>Description</value></data>
+  <data name="common.descriptionCs"><value>Description (Czech)</value></data>
+  <data name="common.descriptionEn"><value>Description (English)</value></data>
+  <data name="common.sortOrder"><value>Sort Order</value></data>
+  <data name="common.validFrom"><value>Valid From</value></data>
+  <data name="common.validTo"><value>Valid To</value></data>
+  <data name="common.createdAt"><value>Created</value></data>
+  <data name="common.createdBy"><value>Created By</value></data>
+  <data name="common.updatedAt"><value>Updated</value></data>
+  <data name="common.updatedBy"><value>Updated By</value></data>
+  <data name="common.basicInfo"><value>Basic Info</value></data>
+
+  <!-- Codelist Dashboard -->
+  <data name="codelist.dashboard.title"><value>Available Enumlists</value></data>
+  <data name="codelist.dashboard.view"><value>View</value></data>
+  <data name="codelist.dashboard.empty"><value>No enumlists available.</value></data>
+  <data name="codelist.dashboard.filterByFlag"><value>Filter by:</value></data>
+  <data name="codelist.dashboard.allCodelists"><value>All</value></data>
+
+  <!-- API Modal -->
+  <data name="codelist.api.yourKey"><value>Your API Key</value></data>
+  <data name="codelist.api.noKey"><value>You don't have an API key. Please contact administrator.</value></data>
+  <data name="codelist.api.endpoint"><value>API Endpoint</value></data>
+  <data name="codelist.api.format"><value>Response Format</value></data>
+  <data name="codelist.api.curlExample"><value>cURL Example</value></data>
+  <data name="codelist.api.tryIt"><value>Try it</value></data>
+  <data name="codelist.api.execute"><value>Execute</value></data>
+  <data name="codelist.api.response"><value>Response</value></data>
+
+  <!-- Codelist Registry -->
+  <data name="codelist.registry.title"><value>Enumlist Registry</value></data>
+  <data name="codelist.registry.create"><value>Add Enumlist</value></data>
+  <data name="codelist.registry.edit"><value>Edit Enumlist</value></data>
+  <data name="codelist.registry.code"><value>Code</value></data>
+  <data name="codelist.registry.name"><value>Name</value></data>
+  <data name="codelist.registry.description"><value>Description</value></data>
+  <data name="codelist.registry.webUrl"><value>Web URL</value></data>
+  <data name="codelist.registry.apiUrl"><value>API URL</value></data>
+  <data name="codelist.registry.iconClass"><value>Icon</value></data>
+  <data name="codelist.registry.sortOrder"><value>Sort Order</value></data>
+  <data name="codelist.registry.active"><value>Active</value></data>
+  <data name="codelist.registry.flags"><value>Flags</value></data>
+
+  <!-- Flags -->
+  <data name="flag.title"><value>Flags</value></data>
+  <data name="flag.create"><value>Create Flag</value></data>
+  <data name="flag.edit"><value>Edit Flag</value></data>
+  <data name="flag.code"><value>Code</value></data>
+  <data name="flag.name"><value>Name</value></data>
+  <data name="flag.description"><value>Description</value></data>
+  <data name="flag.color"><value>Color</value></data>
+  <data name="flag.iconClass"><value>Icon</value></data>
+  <data name="flag.sortOrder"><value>Sort Order</value></data>
+  <data name="flag.active"><value>Active</value></data>
+  <data name="flag.empty"><value>No flags available.</value></data>
+
+  <!-- Voltage Levels -->
+  <data name="voltagelevel.title"><value>Voltage Levels</value></data>
+  <data name="voltagelevel.create"><value>Create Voltage Level</value></data>
+  <data name="voltagelevel.edit"><value>Edit Voltage Level</value></data>
+  <data name="voltagelevel.code"><value>Code</value></data>
+  <data name="voltagelevel.name"><value>Name</value></data>
+  <data name="voltagelevel.voltageRange"><value>Voltage Range</value></data>
+  <data name="voltagelevel.sortOrder"><value>Sort Order</value></data>
+  <data name="voltagelevel.active"><value>Active</value></data>
+
+  <!-- Network Types -->
+  <data name="networktype.title"><value>Network Types</value></data>
+  <data name="networktype.create"><value>Create Network Type</value></data>
+  <data name="networktype.edit"><value>Edit Network Type</value></data>
+  <data name="networktype.code"><value>Code</value></data>
+  <data name="networktype.name"><value>Name</value></data>
+  <data name="networktype.description"><value>Description</value></data>
+  <data name="networktype.sortOrder"><value>Sort Order</value></data>
+  <data name="networktype.active"><value>Active</value></data>
+
+  <!-- Users -->
+  <data name="user.title"><value>Users</value></data>
+  <data name="user.create"><value>Create User</value></data>
+  <data name="user.edit"><value>Edit User</value></data>
+  <data name="user.username"><value>Username</value></data>
+  <data name="user.email"><value>Email</value></data>
+  <data name="user.firstName"><value>First Name</value></data>
+  <data name="user.lastName"><value>Last Name</value></data>
+  <data name="user.password"><value>Password</value></data>
+  <data name="user.newPassword"><value>New Password</value></data>
+  <data name="user.role"><value>Role</value></data>
+  <data name="user.usagePlan"><value>Usage Plan</value></data>
+  <data name="user.enabled"><value>Enabled</value></data>
+  <data name="user.createdAt"><value>Created At</value></data>
+  <data name="user.trialEndDate"><value>Trial End Date</value></data>
+  <data name="user.role.admin"><value>Administrator</value></data>
+  <data name="user.role.contributor"><value>Contributor</value></data>
+  <data name="user.role.reader"><value>Reader</value></data>
+  <data name="user.newUsers"><value>New Users</value></data>
+  <data name="user.noNewUsers"><value>No new users</value></data>
+
+  <!-- API Keys -->
+  <data name="apikey.title"><value>API Keys</value></data>
+  <data name="apikey.create"><value>Create API Key</value></data>
+  <data name="apikey.name"><value>Name</value></data>
+  <data name="apikey.key"><value>Key</value></data>
+  <data name="apikey.usagePlan"><value>Usage Plan</value></data>
+  <data name="apikey.enabled"><value>Enabled</value></data>
+  <data name="apikey.created"><value>Created</value></data>
+  <data name="apikey.expires"><value>Expires At</value></data>
+  <data name="apikey.plan.free"><value>Free</value></data>
+  <data name="apikey.plan.basic"><value>Basic</value></data>
+  <data name="apikey.plan.premium"><value>Premium</value></data>
+  <data name="apikey.plan.enterprise"><value>Enterprise</value></data>
+
+  <!-- Admin Dashboard -->
+  <data name="admin.dashboard.title"><value>Admin Dashboard</value></data>
+  <data name="admin.dashboard.totalUsers"><value>Total Users</value></data>
+  <data name="admin.dashboard.activeApiKeys"><value>Active API Keys</value></data>
+  <data name="admin.dashboard.requestsToday"><value>Requests Today</value></data>
+  <data name="admin.dashboard.requestsWeek"><value>Requests This Week</value></data>
+  <data name="admin.dashboard.requestsMonth"><value>Requests This Month</value></data>
+  <data name="admin.dashboard.requestsAllTime"><value>All Time Requests</value></data>
+  <data name="admin.dashboard.dailyRequests"><value>Daily Requests (Last 30 Days)</value></data>
+  <data name="admin.dashboard.topEndpoints"><value>Top Endpoints</value></data>
+  <data name="admin.dashboard.topUsers"><value>Top Users</value></data>
+  <data name="admin.dashboard.recentRequests"><value>Recent Requests</value></data>
+  <data name="admin.dashboard.endpoint"><value>Endpoint</value></data>
+  <data name="admin.dashboard.requests"><value>Requests</value></data>
+  <data name="admin.dashboard.avgTime"><value>Avg Time</value></data>
+  <data name="admin.dashboard.user"><value>User</value></data>
+  <data name="admin.dashboard.email"><value>Email</value></data>
+  <data name="admin.dashboard.time"><value>Time</value></data>
+  <data name="admin.dashboard.status"><value>Status</value></data>
+  <data name="admin.dashboard.responseTime"><value>Response Time</value></data>
+  <data name="admin.dashboard.ip"><value>IP Address</value></data>
+  <data name="admin.dashboard.noData"><value>No data available</value></data>
+  <data name="admin.dashboard.responseFormat"><value>Response Format (JSON vs XML)</value></data>
+  <data name="admin.dashboard.json"><value>JSON</value></data>
+  <data name="admin.dashboard.xml"><value>XML</value></data>
+  <data name="admin.dashboard.noFormatData"><value>No format data available yet</value></data>
+  <data name="admin.dashboard.filter.all"><value>All</value></data>
+  <data name="admin.dashboard.pager.page"><value>Page</value></data>
+  <data name="admin.dashboard.pager.of"><value>of</value></data>
+  <data name="admin.dashboard.pager.showing"><value>Showing</value></data>
+  <data name="admin.dashboard.recentChanges"><value>Recent Changes</value></data>
+  <data name="admin.dashboard.noChanges"><value>No changes</value></data>
+  <data name="admin.dashboard.codelists"><value>Codelists</value></data>
+  <data name="admin.dashboard.auditRecords"><value>Audit Records</value></data>
+
+  <!-- Audit -->
+  <data name="audit.title"><value>Audit Log</value></data>
+  <data name="audit.entityType"><value>Entity Type</value></data>
+  <data name="audit.entityId"><value>Entity ID</value></data>
+  <data name="audit.entityCode"><value>Entity Code</value></data>
+  <data name="audit.changeType"><value>Change Type</value></data>
+  <data name="audit.changedBy"><value>Changed By</value></data>
+  <data name="audit.changedAt"><value>Changed At</value></data>
+  <data name="audit.oldValues"><value>Old Values</value></data>
+  <data name="audit.newValues"><value>New Values</value></data>
+  <data name="audit.search"><value>Search</value></data>
+  <data name="audit.searchPlaceholder"><value>Search in code, values...</value></data>
+  <data name="audit.noRecords"><value>No records found</value></data>
+  <data name="audit.pagination"><value>Page {0} of {1} ({2} records)</value></data>
+  <data name="audit.detail.title"><value>Audit Log Detail</value></data>
+  <data name="audit.detail.info"><value>Change Information</value></data>
+  <data name="audit.noOldValues"><value>No old values</value></data>
+  <data name="audit.noNewValues"><value>No new values</value></data>
+  <data name="audit.deletedValues"><value>Deleted Values</value></data>
+
+  <!-- Security / Login -->
+  <data name="security.login"><value>Login</value></data>
+  <data name="security.username"><value>Username</value></data>
+  <data name="security.password"><value>Password</value></data>
+  <data name="security.login.submit"><value>Sign In</value></data>
+  <data name="security.access.denied"><value>Access Denied</value></data>
+  <data name="security.authentication.failed"><value>Authentication Failed</value></data>
+  <data name="security.rememberMe"><value>Remember me</value></data>
+  <data name="security.login.error"><value>Invalid login credentials.</value></data>
+
+  <!-- Registration -->
+  <data name="registration.title"><value>Registration</value></data>
+  <data name="registration.username"><value>Username</value></data>
+  <data name="registration.email"><value>E-mail</value></data>
+  <data name="registration.password"><value>Password</value></data>
+  <data name="registration.password.hint"><value>Minimum 8 characters</value></data>
+  <data name="registration.confirmPassword"><value>Confirm Password</value></data>
+  <data name="registration.usagePlan"><value>Usage Plan</value></data>
+  <data name="registration.trial.info"><value>All new registrations include a free 1-month trial period.</value></data>
+  <data name="registration.submit"><value>Register</value></data>
+  <data name="registration.haveAccount"><value>Already have an account?</value></data>
+  <data name="registration.login"><value>Sign in</value></data>
+  <data name="registration.noAccount"><value>Don't have an account?</value></data>
+  <data name="registration.register"><value>Register</value></data>
+  <data name="registration.success.title"><value>Registration Successful!</value></data>
+  <data name="registration.success.welcome"><value>Welcome, {0}! Your account has been successfully created.</value></data>
+  <data name="registration.success.accountDetails"><value>Account Details</value></data>
+  <data name="registration.success.trialEnds"><value>Trial Ends</value></data>
+  <data name="registration.success.apiKey"><value>Your API Key</value></data>
+  <data name="registration.success.apiKey.warning"><value>Important!</value></data>
+  <data name="registration.success.apiKey.warningText"><value>Save this API key now. You won't be able to see it again!</value></data>
+  <data name="registration.success.copy"><value>Copy</value></data>
+  <data name="registration.success.copied"><value>Copied to clipboard!</value></data>
+  <data name="registration.success.howToUse"><value>How to use API key</value></data>
+  <data name="registration.success.howToUseText"><value>Add the API key to request header:</value></data>
+  <data name="registration.success.example"><value>Example curl request:</value></data>
+  <data name="registration.success.login"><value>Continue to login</value></data>
+
+  <!-- Profile -->
+  <data name="profile.title"><value>My Profile</value></data>
+  <data name="profile.userInfo"><value>User Information</value></data>
+  <data name="profile.username"><value>Username</value></data>
+  <data name="profile.email"><value>Email</value></data>
+  <data name="profile.role"><value>Role</value></data>
+  <data name="profile.usagePlan"><value>Usage Plan</value></data>
+  <data name="profile.trialEndDate"><value>Trial End Date</value></data>
+  <data name="profile.apiKeys"><value>API Keys</value></data>
+  <data name="profile.noApiKeys"><value>You don't have any API keys.</value></data>
+  <data name="profile.enabled"><value>Enabled</value></data>
+  <data name="profile.disabled"><value>Disabled</value></data>
+  <data name="profile.expiresAt"><value>Expires</value></data>
+  <data name="profile.regenerateApiKey"><value>Regenerate API Key</value></data>
+  <data name="profile.regenerateWarning"><value>Warning: Regenerating the API key will invalidate the old key.</value></data>
+  <data name="profile.newApiKeyGenerated"><value>New API key generated!</value></data>
+  <data name="profile.copyWarning"><value>Copy your new API key now. You won't be able to see it again!</value></data>
+  <data name="profile.copy"><value>Copy</value></data>
+  <data name="profile.phoneNumber"><value>Phone Number</value></data>
+  <data name="profile.save"><value>Save Changes</value></data>
+  <data name="profile.saved"><value>Your profile has been updated.</value></data>
+  <data name="profile.phoneError"><value>Failed to save phone number.</value></data>
+  <data name="profile.emailVerified"><value>Verified</value></data>
+  <data name="profile.emailNotVerified"><value>Not verified</value></data>
+  <data name="profile.sendVerification"><value>Send verification email</value></data>
+  <data name="profile.verificationSent"><value>Verification email sent. Please check your email.</value></data>
+  <data name="profile.changeEmail"><value>Change Email</value></data>
+  <data name="profile.newEmail"><value>New Email</value></data>
+  <data name="profile.emailUnchanged"><value>Your email is unchanged.</value></data>
+  <data name="profile.emailChangeSent"><value>Confirmation link sent. Please check your email.</value></data>
+  <data name="profile.changePassword"><value>Change Password</value></data>
+  <data name="profile.currentPassword"><value>Current Password</value></data>
+  <data name="profile.newPassword"><value>New Password</value></data>
+  <data name="profile.confirmPassword"><value>Confirm Password</value></data>
+  <data name="profile.updatePassword"><value>Update Password</value></data>
+  <data name="profile.passwordChanged"><value>Your password has been changed.</value></data>
+  <data name="profile.personalData"><value>Personal Data</value></data>
+  <data name="profile.personalDataInfo"><value>Your account contains personal data that you have given us. You can download or delete this data.</value></data>
+  <data name="profile.downloadData"><value>Download My Data</value></data>
+  <data name="profile.deleteAccount"><value>Delete Account</value></data>
+  <data name="profile.deleteWarning"><value>Deleting your account is permanent. All your data will be permanently removed.</value></data>
+  <data name="profile.confirmDelete"><value>Yes, delete my account</value></data>
+  <data name="profile.incorrectPassword"><value>Incorrect password.</value></data>
+  <data name="profile.accountDeleted"><value>Your account has been deleted.</value></data>
+  <data name="profile.registeredAt"><value>Registered</value></data>
+  <data name="profile.lastLogin"><value>Last Login</value></data>
+
+  <!-- Validation -->
+  <data name="validation.required"><value>{0} is required</value></data>
+  <data name="validation.email.invalid"><value>Invalid email address</value></data>
+  <data name="validation.code.exists"><value>Code already exists</value></data>
+  <data name="validation.date.invalid"><value>Invalid date</value></data>
+  <data name="validation.password.size"><value>Password must be 8-100 characters</value></data>
+  <data name="validation.password.mismatch"><value>Passwords do not match</value></data>
+  <data name="validation.username.size"><value>Username must be 3-50 characters</value></data>
+
+  <!-- Messages -->
+  <data name="message.success.created"><value>{0} was successfully created</value></data>
+  <data name="message.success.updated"><value>{0} was successfully updated</value></data>
+  <data name="message.success.deleted"><value>{0} was successfully deleted</value></data>
+  <data name="message.error.notfound"><value>{0} not found</value></data>
+  <data name="message.error.unknown"><value>An unknown error occurred</value></data>
+  <data name="message.error.ratelimit"><value>Rate limit exceeded</value></data>
+
+  <!-- Notifications -->
+  <data name="notification.title"><value>Notifications</value></data>
+  <data name="notification.empty"><value>No notifications</value></data>
+  <data name="notification.clearAll"><value>Clear all</value></data>
+  <data name="notification.action.create"><value>created</value></data>
+  <data name="notification.action.insert"><value>created</value></data>
+  <data name="notification.action.update"><value>updated</value></data>
+  <data name="notification.action.delete"><value>deleted</value></data>
+  <data name="notification.by"><value>by</value></data>
+  <data name="notification.justNow"><value>Just now</value></data>
+  <data name="notification.minutesAgo"><value>min ago</value></data>
+  <data name="notification.hoursAgo"><value>h ago</value></data>
+
+  <!-- Usage Plans -->
+  <data name="usageplan.PER_MONTH"><value>Per Month</value></data>
+  <data name="usageplan.PER_YEAR"><value>Per Year</value></data>
+  <data name="usageplan.PER_REQUEST"><value>Per Request</value></data>
+
+  <!-- ČÚZK Common -->
+  <data name="cuzk.abbreviation"><value>Abbreviation</value></data>
+  <data name="cuzk.landParcelTypeCode"><value>Land Parcel Type Code</value></data>
+  <data name="cuzk.agriculturalLand"><value>Agricultural Land</value></data>
+  <data name="cuzk.buildingParcel"><value>Building Parcel</value></data>
+  <data name="cuzk.mandatoryLandProtection"><value>Mandatory Land Protection</value></data>
+  <data name="cuzk.mandatoryLandUse"><value>Mandatory Land Use</value></data>
+  <data name="cuzk.entryCode"><value>Entry Code</value></data>
+  <data name="cuzk.attributes"><value>ČÚZK Attributes</value></data>
+  <data name="cuzk.validity"><value>Validity</value></data>
+  <data name="cuzk.validFrom"><value>Valid From</value></data>
+  <data name="cuzk.validTo"><value>Valid To</value></data>
+
+  <!-- ČÚZK - Land Types -->
+  <data name="cuzk.landtype.title"><value>Land Types (ČÚZK)</value></data>
+  <data name="cuzk.landtype.create"><value>Create Land Type</value></data>
+  <data name="cuzk.landtype.edit"><value>Edit Land Type</value></data>
+
+  <!-- ČÚZK - Land Uses -->
+  <data name="cuzk.landuse.title"><value>Land Uses (ČÚZK)</value></data>
+  <data name="cuzk.landuse.create"><value>Create Land Use</value></data>
+  <data name="cuzk.landuse.edit"><value>Edit Land Use</value></data>
+
+  <!-- ČÚZK - Building Types -->
+  <data name="cuzk.buildingtype.title"><value>Building Types (ČÚZK)</value></data>
+  <data name="cuzk.buildingtype.create"><value>Create Building Type</value></data>
+  <data name="cuzk.buildingtype.edit"><value>Edit Building Type</value></data>
+
+  <!-- ČÚZK - Building Uses -->
+  <data name="cuzk.buildinguse.title"><value>Building Uses (ČÚZK)</value></data>
+  <data name="cuzk.buildinguse.create"><value>Create Building Use</value></data>
+  <data name="cuzk.buildinguse.edit"><value>Edit Building Use</value></data>
+
+  <!-- ČÚZK - Land Type Uses -->
+  <data name="cuzk.landtypeuse.title"><value>Land Type Uses (ČÚZK)</value></data>
+  <data name="cuzk.landtypeuse.create"><value>Create Mapping</value></data>
+  <data name="cuzk.landtypeuse.edit"><value>Edit Mapping</value></data>
+  <data name="cuzk.landTypeCode"><value>Land Type Code</value></data>
+  <data name="cuzk.landUseCode"><value>Land Use Code</value></data>
+
+  <!-- ČÚZK - Building Type Uses -->
+  <data name="cuzk.buildingtypeuse.title"><value>Building Type Uses (ČÚZK)</value></data>
+  <data name="cuzk.buildingtypeuse.create"><value>Create Mapping</value></data>
+  <data name="cuzk.buildingtypeuse.edit"><value>Edit Mapping</value></data>
+  <data name="cuzk.buildingTypeCode"><value>Building Type Code</value></data>
+  <data name="cuzk.buildingUseCode"><value>Building Use Code</value></data>
+
+  <!-- ČÚZK - Unit Types -->
+  <data name="cuzk.unittype.title"><value>Unit Types (ČÚZK)</value></data>
+  <data name="cuzk.unittype.create"><value>Create Unit Type</value></data>
+  <data name="cuzk.unittype.edit"><value>Edit Unit Type</value></data>
+  <data name="cuzk.civilCode"><value>Civil Code</value></data>
+
+  <!-- ČÚZK - Unit Uses -->
+  <data name="cuzk.unituse.title"><value>Unit Uses (ČÚZK)</value></data>
+  <data name="cuzk.unituse.create"><value>Create Unit Use</value></data>
+  <data name="cuzk.unituse.edit"><value>Edit Unit Use</value></data>
+
+  <!-- ČÚZK - Property Protection Types -->
+  <data name="cuzk.propertyprotectiontype.title"><value>Property Protection Types (ČÚZK)</value></data>
+  <data name="cuzk.propertyprotectiontype.create"><value>Create Protection Type</value></data>
+  <data name="cuzk.propertyprotectiontype.edit"><value>Edit Protection Type</value></data>
+
+  <!-- ČÚZK - Property Protections -->
+  <data name="cuzk.propertyprotection.title"><value>Property Protections (ČÚZK)</value></data>
+  <data name="cuzk.propertyprotection.create"><value>Create Protection</value></data>
+  <data name="cuzk.propertyprotection.edit"><value>Edit Protection</value></data>
+  <data name="cuzk.protectionTypeCode"><value>Protection Type Code</value></data>
+  <data name="cuzk.appliesTo"><value>Applies To</value></data>
+  <data name="cuzk.appliesToLand"><value>Land</value></data>
+  <data name="cuzk.appliesToBuilding"><value>Building</value></data>
+  <data name="cuzk.appliesToUnit"><value>Unit</value></data>
+  <data name="cuzk.appliesToBuildingRight"><value>Building Right</value></data>
+
+  <!-- ČÚZK - Area Determinations -->
+  <data name="cuzk.areadetermination.title"><value>Area Determination Methods (ČÚZK)</value></data>
+  <data name="cuzk.areadetermination.create"><value>Create Area Determination</value></data>
+  <data name="cuzk.areadetermination.edit"><value>Edit Area Determination</value></data>
+
+  <!-- ČÚZK - Soil Ecological Units -->
+  <data name="cuzk.soilecologicalunit.title"><value>Soil Ecological Units - BPEJ (ČÚZK)</value></data>
+  <data name="cuzk.soilecologicalunit.create"><value>Create BPEJ</value></data>
+  <data name="cuzk.soilecologicalunit.edit"><value>Edit BPEJ</value></data>
+  <data name="cuzk.price"><value>Price</value></data>
+  <data name="cuzk.detailedDescription"><value>Detailed Description</value></data>
+
+  <!-- ČÚZK - Simplified Parcel Sources -->
+  <data name="cuzk.simplifiedparcelsource.title"><value>Simplified Parcel Sources (ČÚZK)</value></data>
+  <data name="cuzk.simplifiedparcelsource.create"><value>Create Source</value></data>
+  <data name="cuzk.simplifiedparcelsource.edit"><value>Edit Source</value></data>
+
+  <!-- ČÚZK - Building Right Purposes -->
+  <data name="cuzk.buildingrightpurpose.title"><value>Building Right Purposes (ČÚZK)</value></data>
+  <data name="cuzk.buildingrightpurpose.create"><value>Create Purpose</value></data>
+  <data name="cuzk.buildingrightpurpose.edit"><value>Edit Purpose</value></data>
+
+  <!-- KSO -->
+  <data name="kso.title"><value>Building Classifications (KSO)</value></data>
+  <data name="kso.create"><value>Create Classification</value></data>
+  <data name="kso.edit"><value>Edit Classification</value></data>
+  <data name="kso.code"><value>Code</value></data>
+  <data name="kso.codeHelp"><value>e.g., 801, 801.1, 801.11, 801.11.1</value></data>
+  <data name="kso.name"><value>Name</value></data>
+  <data name="kso.nameCs"><value>Name (Czech)</value></data>
+  <data name="kso.nameEn"><value>Name (English)</value></data>
+  <data name="kso.descriptionCs"><value>Description (Czech)</value></data>
+  <data name="kso.descriptionEn"><value>Description (English)</value></data>
+  <data name="kso.level"><value>Level</value></data>
+  <data name="kso.level1"><value>1 - Subgroup (e.g., 801)</value></data>
+  <data name="kso.level2"><value>2 - Section (e.g., 801.1)</value></data>
+  <data name="kso.level3"><value>3 - Subsection (e.g., 801.11)</value></data>
+  <data name="kso.level4"><value>4 - Structural-material characteristic (e.g., 801.11.1)</value></data>
+  <data name="kso.parent"><value>Parent Item</value></data>
+  <data name="kso.noParent"><value>-- No parent --</value></data>
+  <data name="kso.sortOrder"><value>Sort Order</value></data>
+  <data name="kso.active"><value>Active</value></data>
+  <data name="kso.treeView"><value>Tree View</value></data>
+  <data name="kso.listView"><value>List View</value></data>
+  <data name="kso.allItems"><value>All Items</value></data>
+  <data name="kso.allLevels"><value>All</value></data>
+  <data name="kso.filterByLevel"><value>Filter by level:</value></data>
+  <data name="kso.showChildren"><value>Show Children</value></data>
+  <data name="kso.empty"><value>No items found.</value></data>
+
+  <!-- Language -->
+  <data name="language.switch"><value>Čeština</value></data>
+  <data name="language.current"><value>English</value></data>
+</root>

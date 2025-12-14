@@ -1,25 +1,45 @@
 @page "/"
+@rendermode InteractiveServer
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.Localization
 @using LegislativeEnumsNew.Data
 @using LegislativeEnumsNew.Data.Entities
+@using LegislativeEnumsNew.Resources
+@using System.Globalization
 @attribute [Authorize]
 @inject ApplicationDbContext DbContext
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>Legislative Codelists</PageTitle>
+<PageTitle>@L["app.title"]</PageTitle>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">
         <i class="bi bi-journal-code me-2"></i>
-        Přehled číselníků
+        @L["codelist.dashboard.title"]
     </h1>
+    <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">@L["codelist.api.format"]:</span>
+        <div class="btn-group" role="group" aria-label="API response format">
+            <button type="button"
+                    class="btn btn-sm @(selectedFormat == "json" ? "btn-primary" : "btn-outline-primary")"
+                    @onclick="@(() => SetFormat("json"))">
+                <i class="bi bi-braces me-1"></i>JSON
+            </button>
+            <button type="button"
+                    class="btn btn-sm @(selectedFormat == "xml" ? "btn-primary" : "btn-outline-primary")"
+                    @onclick="@(() => SetFormat("xml"))">
+                <i class="bi bi-code-slash me-1"></i>XML
+            </button>
+        </div>
+    </div>
 </div>
 
 @if (codelists == null)
 {
     <div class="d-flex justify-content-center py-5">
         <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Načítání...</span>
+            <span class="visually-hidden">@L["common.loading"]</span>
         </div>
     </div>
 }
@@ -34,18 +54,18 @@ else
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <h5 class="card-title mb-0">
                                 <i class="bi @(codelist.IconClass ?? "bi-list") me-2 text-primary"></i>
-                                @codelist.NameCs
+                                @(IsEnglish ? codelist.NameEn ?? codelist.NameCs : codelist.NameCs)
                             </h5>
                         </div>
-                        <p class="card-text text-muted small">@codelist.DescriptionCs</p>
+                        <p class="card-text text-muted small">@(IsEnglish ? codelist.DescriptionEn ?? codelist.DescriptionCs : codelist.DescriptionCs)</p>
                     </div>
                     <div class="card-footer bg-transparent border-top-0">
                         <div class="d-flex gap-2">
                             <a href="@codelist.WebUrl" class="btn btn-outline-primary btn-sm flex-grow-1">
-                                <i class="bi bi-eye me-1"></i> Zobrazit
+                                <i class="bi bi-eye me-1"></i> @L["codelist.dashboard.view"]
                             </a>
-                            <a href="@codelist.ApiUrl" class="btn btn-outline-secondary btn-sm" target="_blank" title="API">
-                                <i class="bi bi-code-slash"></i>
+                            <a href="@GetApiUrl(codelist.ApiUrl)" class="btn btn-outline-secondary btn-sm" target="_blank" title="API (@selectedFormat.ToUpper())">
+                                <i class="bi @(selectedFormat == "json" ? "bi-braces" : "bi-code-slash")"></i>
                             </a>
                         </div>
                     </div>
@@ -57,11 +77,27 @@ else
 
 @code {
     private List<CodelistRegistry>? codelists;
+    private string selectedFormat = "json";
+    private bool IsEnglish => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en";
 
     protected override async Task OnInitializedAsync()
     {
         codelists = await DbContext.CodelistRegistry
             .OrderBy(c => c.SortOrder)
             .ToListAsync();
+    }
+
+    private void SetFormat(string format)
+    {
+        selectedFormat = format;
+    }
+
+    private string GetApiUrl(string? baseUrl)
+    {
+        if (string.IsNullOrEmpty(baseUrl))
+            return "#";
+
+        var separator = baseUrl.Contains('?') ? "&" : "?";
+        return $"{baseUrl}{separator}format={selectedFormat}";
     }
 }

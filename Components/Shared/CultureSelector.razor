@@ -1,0 +1,58 @@
+@using System.Globalization
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<div class="dropdown">
+    <button class="btn btn-link nav-link dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="me-1">@GetFlag(currentCulture)</span>
+        <span class="d-none d-md-inline">@GetDisplayName(currentCulture)</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+        @foreach (var culture in SupportedCultures)
+        {
+            <li>
+                <button class="dropdown-item @(culture.Name == currentCulture ? "active" : "")"
+                        @onclick="() => SetCulture(culture.Name)">
+                    <span class="me-2">@GetFlag(culture.Name)</span>
+                    @GetDisplayName(culture.Name)
+                </button>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    private string currentCulture = "cs";
+
+    private static readonly CultureInfo[] SupportedCultures = { new("cs"), new("en") };
+
+    protected override void OnInitialized()
+    {
+        currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    }
+
+    private void SetCulture(string cultureName)
+    {
+        if (cultureName != currentCulture)
+        {
+            // Navigate to culture change endpoint
+            var uri = new Uri(NavigationManager.Uri);
+            var cultureUrl = $"/api/Culture/Set?culture={cultureName}&returnUrl={Uri.EscapeDataString(uri.PathAndQuery)}";
+            NavigationManager.NavigateTo(cultureUrl, forceLoad: true);
+        }
+    }
+
+    private static string GetFlag(string cultureName) => cultureName switch
+    {
+        "cs" => "🇨🇿",
+        "en" => "🇬🇧",
+        _ => "🌐"
+    };
+
+    private static string GetDisplayName(string cultureName) => cultureName switch
+    {
+        "cs" => "Čeština",
+        "en" => "English",
+        _ => cultureName
+    };
+}

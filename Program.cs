@@ -1,16 +1,37 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using LegislativeEnumsNew.Components;
 using LegislativeEnumsNew.Components.Account;
 using LegislativeEnumsNew.Data;
+using LegislativeEnumsNew.Resources;
 using LegislativeEnumsNew.Services;
+using LegislativeEnumsNew.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Add localization
+builder.Services.AddLocalization();
+
+// Configure request localization with cookie provider
+var supportedCultures = new[] { new CultureInfo("cs"), new CultureInfo("en") };
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("cs");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new CookieRequestCultureProvider()
+    };
+});
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
@@ -50,11 +71,25 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+// Add notification broadcaster (singleton for SSE)
+builder.Services.AddSingleton<NotificationBroadcaster>();
+
+// Add notification service
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
 // Add audit service
 builder.Services.AddScoped<IAuditService, AuditService>();
 
-// Add controllers for API
-builder.Services.AddControllers();
+// Add dashboard service
+builder.Services.AddScoped<DashboardService>();
+
+// Add controllers for API with XML support
+builder.Services.AddControllers(options =>
+{
+    options.RespectBrowserAcceptHeader = true;
+    options.ReturnHttpNotAcceptable = false;
+})
+.AddXmlDataContractSerializerFormatters();
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -86,10 +121,15 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseAntiforgery();
+app.UseRequestLocalization();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseAntiforgery();
+
+// Log API usage for statistics
+app.UseApiUsageLogging();
 
 app.MapControllers();
 app.MapStaticAssets();

@@ -3,20 +3,23 @@
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Localization
 @using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Resources
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>Přihlášení</PageTitle>
+<PageTitle>@L["security.login"]</PageTitle>
 
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
         <div class="card shadow">
             <div class="card-header bg-primary text-white text-center">
-                <h4 class="mb-0"><i class="bi bi-box-arrow-in-right me-2"></i>Přihlášení</h4>
+                <h4 class="mb-0"><i class="bi bi-box-arrow-in-right me-2"></i>@L["security.login"]</h4>
             </div>
             <div class="card-body">
                 <StatusMessage Message="@errorMessage" />
@@ -24,28 +27,29 @@
                     <DataAnnotationsValidator />
                     <ValidationSummary class="text-danger" role="alert" />
                     <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.UserName" id="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="Uživatelské jméno" />
-                        <label for="Input.UserName">Uživatelské jméno</label>
+                        <InputText @bind-Value="Input.UserName" id="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="@L["security.username"]" />
+                        <label for="Input.UserName">@L["security.username"]</label>
                         <ValidationMessage For="() => Input.UserName" class="text-danger" />
                     </div>
                     <div class="form-floating mb-3">
-                        <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Heslo" />
-                        <label for="Input.Password">Heslo</label>
+                        <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="@L["security.password"]" />
+                        <label for="Input.Password">@L["security.password"]</label>
                         <ValidationMessage For="() => Input.Password" class="text-danger" />
                     </div>
                     <div class="form-check mb-3">
                         <InputCheckbox @bind-Value="Input.RememberMe" class="form-check-input" id="rememberMe" />
-                        <label class="form-check-label" for="rememberMe">Zapamatovat přihlášení</label>
+                        <label class="form-check-label" for="rememberMe">@L["security.rememberMe"]</label>
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Přihlásit
+                            <i class="bi bi-box-arrow-in-right me-2"></i>@L["security.login.submit"]
                         </button>
                     </div>
                 </EditForm>
             </div>
             <div class="card-footer text-center">
-                <a href="Account/Register" class="text-decoration-none">Registrovat nový účet</a>
+                <span class="text-muted">@L["registration.noAccount"]</span>
+                <a href="Account/Register" class="text-decoration-none ms-1">@L["registration.register"]</a>
             </div>
         </div>
     </div>
@@ -92,7 +96,7 @@
         }
         else
         {
-            errorMessage = "Chyba: Neplatné přihlašovací údaje.";
+            errorMessage = $"Error: {L["security.login.error"]}";
         }
     }
 
@@ -105,7 +109,6 @@
         [DataType(DataType.Password)]
         public string Password { get; set; } = "";
 
-        [Display(Name = "Zapamatovat")]
         public bool RememberMe { get; set; }
     }
 }

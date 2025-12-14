@@ -18,6 +18,11 @@
         },
         "runtime": {
           "LegislativeEnumsNew.dll": {}
+        },
+        "resources": {
+          "en/LegislativeEnumsNew.resources.dll": {
+            "locale": "en"
+          }
         }
       },
       "AutoMapper/12.0.1": {

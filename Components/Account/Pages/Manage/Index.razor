@@ -1,77 +1,378 @@
-﻿@page "/Account/Manage"
+@page "/Account/Manage"
 
 @using System.ComponentModel.DataAnnotations
+@using System.Text
+@using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Localization
 @using LegislativeEnumsNew.Data
+@using LegislativeEnumsNew.Resources
 
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 @inject IdentityUserAccessor UserAccessor
 @inject IdentityRedirectManager RedirectManager
+@inject IEmailSender<ApplicationUser> EmailSender
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<SharedResource> L
+@inject ILogger<Index> Logger
 
-<PageTitle>Profile</PageTitle>
+<PageTitle>@L["profile.title"]</PageTitle>
 
-<h3>Profile</h3>
 <StatusMessage />
 
-<div class="row">
-    <div class="col-xl-6">
-        <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post">
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <input type="text" value="@username" id="username" class="form-control" placeholder="Choose your username." disabled />
-                <label for="username" class="form-label">Username</label>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="mb-4">
+                <i class="bi bi-person-circle me-2"></i>@L["profile.title"]
+            </h2>
+
+            <!-- User Info Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-info-circle me-2"></i>@L["profile.userInfo"]
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <EditForm Model="ProfileInput" FormName="profile" OnValidSubmit="OnProfileSubmitAsync">
+                        <DataAnnotationsValidator />
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">@L["profile.username"]</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control-plaintext" value="@username" readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label fw-semibold">@L["profile.email"]</label>
+                            <div class="col-sm-8">
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2">@email</span>
+                                    @if (isEmailConfirmed)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle me-1"></i>@L["profile.emailVerified"]
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">@L["profile.emailNotVerified"]</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (user?.CreatedAt != default)
+                        {
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label fw-semibold">@L["profile.registeredAt"]</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control-plaintext" value="@user.CreatedAt.ToString("d")" readonly />
+                                </div>
+                            </div>
+                        }
+
+                        <hr class="my-3" />
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label fw-semibold">@L["profile.phoneNumber"]</label>
+                            <InputText @bind-Value="ProfileInput.PhoneNumber" id="phone" class="form-control" placeholder="@L["profile.phoneNumber"]" />
+                            <ValidationMessage For="() => ProfileInput.PhoneNumber" class="text-danger" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1"></i>@L["profile.save"]
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
             </div>
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.PhoneNumber" id="Input.PhoneNumber" class="form-control" placeholder="Enter your phone number" />
-                <label for="Input.PhoneNumber" class="form-label">Phone number</label>
-                <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
+
+            <!-- Change Email Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-envelope me-2"></i>@L["profile.changeEmail"]
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (!isEmailConfirmed)
+                    {
+                        <div class="alert alert-warning mb-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            @L["profile.emailNotVerified"]
+                            <form @onsubmit="OnSendVerificationAsync" @formname="send-verification" method="post" class="d-inline">
+                                <AntiforgeryToken />
+                                <button type="submit" class="btn btn-link p-0 ms-2">@L["profile.sendVerification"]</button>
+                            </form>
+                        </div>
+                    }
+
+                    <EditForm Model="EmailInput" FormName="change-email" OnValidSubmit="OnEmailSubmitAsync">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-3">
+                            <label for="new-email" class="form-label fw-semibold">@L["profile.newEmail"]</label>
+                            <InputText @bind-Value="EmailInput.NewEmail" id="new-email" type="email" class="form-control" placeholder="@L["profile.newEmail"]" />
+                            <ValidationMessage For="() => EmailInput.NewEmail" class="text-danger" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="bi bi-envelope me-1"></i>@L["profile.changeEmail"]
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </EditForm>
+
+            <!-- Change Password Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-key me-2"></i>@L["profile.changePassword"]
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <EditForm Model="PasswordInput" FormName="change-password" OnValidSubmit="OnPasswordSubmitAsync">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary class="text-danger" role="alert" />
+
+                        <div class="mb-3">
+                            <label for="old-password" class="form-label fw-semibold">@L["profile.currentPassword"]</label>
+                            <InputText @bind-Value="PasswordInput.OldPassword" id="old-password" type="password" class="form-control" autocomplete="current-password" />
+                            <ValidationMessage For="() => PasswordInput.OldPassword" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="new-password" class="form-label fw-semibold">@L["profile.newPassword"]</label>
+                            <InputText @bind-Value="PasswordInput.NewPassword" id="new-password" type="password" class="form-control" autocomplete="new-password" />
+                            <ValidationMessage For="() => PasswordInput.NewPassword" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirm-password" class="form-label fw-semibold">@L["profile.confirmPassword"]</label>
+                            <InputText @bind-Value="PasswordInput.ConfirmPassword" id="confirm-password" type="password" class="form-control" autocomplete="new-password" />
+                            <ValidationMessage For="() => PasswordInput.ConfirmPassword" class="text-danger" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="bi bi-key me-1"></i>@L["profile.updatePassword"]
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+
+            <!-- Personal Data Section -->
+            <div class="card mb-4 border-danger">
+                <div class="card-header bg-danger bg-opacity-10">
+                    <h5 class="mb-0 text-danger">
+                        <i class="bi bi-shield-exclamation me-2"></i>@L["profile.personalData"]
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">@L["profile.personalDataInfo"]</p>
+
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <form action="Account/Manage/DownloadPersonalData" method="post">
+                            <AntiforgeryToken />
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="bi bi-download me-1"></i>@L["profile.downloadData"]
+                            </button>
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <div class="alert alert-danger mb-3">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <strong>@L["profile.deleteWarning"]</strong>
+                    </div>
+
+                    <EditForm Model="DeleteInput" FormName="delete-account" OnValidSubmit="OnDeleteSubmitAsync">
+                        <DataAnnotationsValidator />
+
+                        @if (requirePassword)
+                        {
+                            <div class="mb-3">
+                                <label for="delete-password" class="form-label fw-semibold">@L["profile.currentPassword"]</label>
+                                <InputText @bind-Value="DeleteInput.Password" id="delete-password" type="password" class="form-control" autocomplete="current-password" />
+                                <ValidationMessage For="() => DeleteInput.Password" class="text-danger" />
+                            </div>
+                        }
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>@L["profile.confirmDelete"]
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 @code {
     private ApplicationUser user = default!;
     private string? username;
+    private string? email;
     private string? phoneNumber;
+    private bool isEmailConfirmed;
+    private bool requirePassword;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+    [SupplyParameterFromForm(FormName = "profile")]
+    private ProfileInputModel ProfileInput { get; set; } = new();
+
+    [SupplyParameterFromForm(FormName = "change-email")]
+    private EmailInputModel EmailInput { get; set; } = new();
+
+    [SupplyParameterFromForm(FormName = "change-password")]
+    private PasswordInputModel PasswordInput { get; set; } = new();
+
+    [SupplyParameterFromForm(FormName = "delete-account")]
+    private DeleteInputModel DeleteInput { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         username = await UserManager.GetUserNameAsync(user);
+        email = await UserManager.GetEmailAsync(user);
         phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+        isEmailConfirmed = await UserManager.IsEmailConfirmedAsync(user);
+        requirePassword = await UserManager.HasPasswordAsync(user);
 
-        Input.PhoneNumber ??= phoneNumber;
+        ProfileInput.PhoneNumber ??= phoneNumber;
+        EmailInput.NewEmail ??= email;
     }
 
-    private async Task OnValidSubmitAsync()
+    private async Task OnProfileSubmitAsync()
     {
-        if (Input.PhoneNumber != phoneNumber)
+        if (ProfileInput.PhoneNumber != phoneNumber)
         {
-            var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-            if (!setPhoneResult.Succeeded)
+            var result = await UserManager.SetPhoneNumberAsync(user, ProfileInput.PhoneNumber);
+            if (!result.Succeeded)
             {
-                RedirectManager.RedirectToCurrentPageWithStatus("Error: Failed to set phone number.", HttpContext);
+                RedirectManager.RedirectToCurrentPageWithStatus(L["profile.phoneError"], HttpContext);
+                return;
             }
         }
 
         await SignInManager.RefreshSignInAsync(user);
-        RedirectManager.RedirectToCurrentPageWithStatus("Your profile has been updated", HttpContext);
+        RedirectManager.RedirectToCurrentPageWithStatus(L["profile.saved"], HttpContext);
     }
 
-    private sealed class InputModel
+    private async Task OnEmailSubmitAsync()
+    {
+        if (EmailInput.NewEmail is null || EmailInput.NewEmail == email)
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus(L["profile.emailUnchanged"], HttpContext);
+            return;
+        }
+
+        var userId = await UserManager.GetUserIdAsync(user);
+        var code = await UserManager.GenerateChangeEmailTokenAsync(user, EmailInput.NewEmail);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var callbackUrl = NavigationManager.GetUriWithQueryParameters(
+            NavigationManager.ToAbsoluteUri("Account/ConfirmEmailChange").AbsoluteUri,
+            new Dictionary<string, object?> { ["userId"] = userId, ["email"] = EmailInput.NewEmail, ["code"] = code });
+
+        await EmailSender.SendConfirmationLinkAsync(user, EmailInput.NewEmail, HtmlEncoder.Default.Encode(callbackUrl));
+        RedirectManager.RedirectToCurrentPageWithStatus(L["profile.emailChangeSent"], HttpContext);
+    }
+
+    private async Task OnSendVerificationAsync()
+    {
+        if (email is null) return;
+
+        var userId = await UserManager.GetUserIdAsync(user);
+        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var callbackUrl = NavigationManager.GetUriWithQueryParameters(
+            NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
+            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code });
+
+        await EmailSender.SendConfirmationLinkAsync(user, email, HtmlEncoder.Default.Encode(callbackUrl));
+        RedirectManager.RedirectToCurrentPageWithStatus(L["profile.verificationSent"], HttpContext);
+    }
+
+    private async Task OnPasswordSubmitAsync()
+    {
+        var changeResult = await UserManager.ChangePasswordAsync(user, PasswordInput.OldPassword, PasswordInput.NewPassword);
+        if (!changeResult.Succeeded)
+        {
+            var errors = string.Join(", ", changeResult.Errors.Select(e => e.Description));
+            RedirectManager.RedirectToCurrentPageWithStatus($"Error: {errors}", HttpContext);
+            return;
+        }
+
+        await SignInManager.RefreshSignInAsync(user);
+        Logger.LogInformation("User changed their password successfully.");
+        RedirectManager.RedirectToCurrentPageWithStatus(L["profile.passwordChanged"], HttpContext);
+    }
+
+    private async Task OnDeleteSubmitAsync()
+    {
+        if (requirePassword && !await UserManager.CheckPasswordAsync(user, DeleteInput.Password))
+        {
+            RedirectManager.RedirectToCurrentPageWithStatus($"Error: {L["profile.incorrectPassword"]}", HttpContext);
+            return;
+        }
+
+        var result = await UserManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            throw new InvalidOperationException("Unexpected error occurred deleting user.");
+        }
+
+        await SignInManager.SignOutAsync();
+        Logger.LogInformation("User deleted themselves.");
+        RedirectManager.RedirectTo("/");
+    }
+
+    private sealed class ProfileInputModel
     {
         [Phone]
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
+    }
+
+    private sealed class EmailInputModel
+    {
+        [Required]
+        [EmailAddress]
+        public string? NewEmail { get; set; }
+    }
+
+    private sealed class PasswordInputModel
+    {
+        [Required]
+        [DataType(DataType.Password)]
+        public string OldPassword { get; set; } = "";
+
+        [Required]
+        [StringLength(100, MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; } = "";
+
+        [DataType(DataType.Password)]
+        [Compare("NewPassword")]
+        public string ConfirmPassword { get; set; } = "";
+    }
+
+    private sealed class DeleteInputModel
+    {
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
     }
 }

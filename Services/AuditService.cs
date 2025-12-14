@@ -7,23 +7,28 @@ namespace LegislativeEnumsNew.Services;
 public class AuditService : IAuditService
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly INotificationService _notificationService;
     private static readonly JsonSerializerOptions _jsonOptions = new()
     {
         WriteIndented = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    public AuditService(ApplicationDbContext dbContext)
+    public AuditService(ApplicationDbContext dbContext, INotificationService notificationService)
     {
         _dbContext = dbContext;
+        _notificationService = notificationService;
     }
 
     public async Task LogCreateAsync<T>(T entity, string entityCode, string userName) where T : class
     {
+        var entityId = GetEntityId(entity);
+        var entityType = typeof(T).Name;
+
         var auditLog = new AuditLog
         {
-            EntityType = typeof(T).Name,
-            EntityId = GetEntityId(entity),
+            EntityType = entityType,
+            EntityId = entityId,
             EntityCode = entityCode,
             ChangeType = ChangeType.Create,
             ChangedBy = userName,
@@ -33,14 +38,20 @@ public class AuditService : IAuditService
 
         _dbContext.AuditLogs.Add(auditLog);
         await _dbContext.SaveChangesAsync();
+
+        // Create notification
+        await _notificationService.CreateNotificationAsync(entityType, entityId, entityCode, ChangeType.Create, userName);
     }
 
     public async Task LogUpdateAsync<T>(T oldEntity, T newEntity, string entityCode, string userName) where T : class
     {
+        var entityId = GetEntityId(newEntity);
+        var entityType = typeof(T).Name;
+
         var auditLog = new AuditLog
         {
-            EntityType = typeof(T).Name,
-            EntityId = GetEntityId(newEntity),
+            EntityType = entityType,
+            EntityId = entityId,
             EntityCode = entityCode,
             ChangeType = ChangeType.Update,
             ChangedBy = userName,
@@ -51,14 +62,20 @@ public class AuditService : IAuditService
 
         _dbContext.AuditLogs.Add(auditLog);
         await _dbContext.SaveChangesAsync();
+
+        // Create notification
+        await _notificationService.CreateNotificationAsync(entityType, entityId, entityCode, ChangeType.Update, userName);
     }
 
     public async Task LogDeleteAsync<T>(T entity, string entityCode, string userName) where T : class
     {
+        var entityId = GetEntityId(entity);
+        var entityType = typeof(T).Name;
+
         var auditLog = new AuditLog
         {
-            EntityType = typeof(T).Name,
-            EntityId = GetEntityId(entity),
+            EntityType = entityType,
+            EntityId = entityId,
             EntityCode = entityCode,
             ChangeType = ChangeType.Delete,
             ChangedBy = userName,
@@ -68,6 +85,9 @@ public class AuditService : IAuditService
 
         _dbContext.AuditLogs.Add(auditLog);
         await _dbContext.SaveChangesAsync();
+
+        // Create notification
+        await _notificationService.CreateNotificationAsync(entityType, entityId, entityCode, ChangeType.Delete, userName);
     }
 
     private static long GetEntityId<T>(T entity) where T : class

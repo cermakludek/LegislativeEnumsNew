@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LegislativeEnumsNew")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+42c2d4454743fdf5631dec42b6ff71501407c5a5")]
 [assembly: System.Reflection.AssemblyProductAttribute("LegislativeEnumsNew")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LegislativeEnumsNew")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
