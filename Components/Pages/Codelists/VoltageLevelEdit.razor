@@ -33,7 +33,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="code" class="form-label">Kód *</label>
-                        <InputText id="code" @bind-Value="model.Code" class="form-control" />
+                        <InputText id="code" @bind-Value="model.Code" class="form-control" @ref="firstInput" />
                         <ValidationMessage For="() => model.Code" class="text-danger" />
                     </div>
 
@@ -101,6 +101,15 @@
     private bool IsNew => Id == 0;
 
     private VoltageLevelModel model { get; set; } = new();
+    private InputText? firstInput;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && firstInput?.Element != null)
+        {
+            await firstInput.Element.Value.FocusAsync();
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

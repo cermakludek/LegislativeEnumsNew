@@ -50,7 +50,7 @@ else
 
                         <div class="mb-3">
                             <label class="form-label">Uživatelské jméno</label>
-                            <InputText @bind-Value="model.UserName" class="form-control" />
+                            <InputText @bind-Value="model.UserName" class="form-control" @ref="firstInput" />
                             <ValidationMessage For="() => model.UserName" class="text-danger" />
                         </div>
 
@@ -161,6 +161,15 @@ else
     private string? errorMessage;
     private string? successMessage;
     private string newPassword = "";
+    private InputText? firstInput;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && firstInput?.Element != null)
+        {
+            await firstInput.Element.Value.FocusAsync();
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

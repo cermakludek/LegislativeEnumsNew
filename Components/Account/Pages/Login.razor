@@ -27,7 +27,7 @@
                     <DataAnnotationsValidator />
                     <ValidationSummary class="text-danger" role="alert" />
                     <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.UserName" id="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="@L["security.username"]" />
+                        <InputText @bind-Value="Input.UserName" id="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="@L["security.username"]" data-autofocus="true" />
                         <label for="Input.UserName">@L["security.username"]</label>
                         <ValidationMessage For="() => Input.UserName" class="text-danger" />
                     </div>
@@ -77,7 +77,12 @@
 
     public async Task LoginUser()
     {
+        Logger.LogInformation($"Login attempt: UserName='{Input.UserName}', PasswordLength={Input.Password?.Length ?? 0}");
+
         var result = await SignInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+        Logger.LogInformation($"Login result: Succeeded={result.Succeeded}, IsLockedOut={result.IsLockedOut}, RequiresTwoFactor={result.RequiresTwoFactor}, IsNotAllowed={result.IsNotAllowed}");
+
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
@@ -96,7 +101,7 @@
         }
         else
         {
-            errorMessage = $"Error: {L["security.login.error"]}";
+            errorMessage = $"Error: {L["security.login.error"]} (User: {Input.UserName})";
         }
     }
 

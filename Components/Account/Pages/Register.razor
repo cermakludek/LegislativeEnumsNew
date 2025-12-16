@@ -20,59 +20,192 @@
 
 <PageTitle>@L["registration.title"]</PageTitle>
 
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-4">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white text-center">
-                <h4 class="mb-0"><i class="bi bi-person-plus me-2"></i>@L["registration.title"]</h4>
+<div class="row justify-content-center align-items-center g-0" style="min-height: 80vh;">
+    <!-- Left side - Illustration -->
+    <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-center align-items-center p-5"
+         style="background: linear-gradient(135deg, #1a5276 0%, #2e86ab 50%, #48a9a6 100%); min-height: 80vh; border-radius: 1rem 0 0 1rem;">
+
+        <!-- SVG Illustration -->
+        <svg viewBox="0 0 400 300" style="max-width: 350px; margin-bottom: 2rem;">
+            <!-- Background elements -->
+            <defs>
+                <linearGradient id="docGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.95" />
+                    <stop offset="100%" style="stop-color:#e8f4f8;stop-opacity:0.95" />
+                </linearGradient>
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.2"/>
+                </filter>
+            </defs>
+
+            <!-- Main document stack -->
+            <g filter="url(#shadow)">
+                <!-- Back document -->
+                <rect x="80" y="50" width="160" height="200" rx="8" fill="url(#docGrad)" transform="rotate(-5 160 150)"/>
+                <rect x="95" y="75" width="80" height="6" rx="3" fill="#1a5276" opacity="0.3" transform="rotate(-5 160 150)"/>
+                <rect x="95" y="90" width="120" height="4" rx="2" fill="#1a5276" opacity="0.2" transform="rotate(-5 160 150)"/>
+                <rect x="95" y="100" width="100" height="4" rx="2" fill="#1a5276" opacity="0.2" transform="rotate(-5 160 150)"/>
+
+                <!-- Middle document -->
+                <rect x="100" y="40" width="160" height="200" rx="8" fill="url(#docGrad)" transform="rotate(3 180 140)"/>
+                <rect x="115" y="65" width="80" height="6" rx="3" fill="#2e86ab" opacity="0.4" transform="rotate(3 180 140)"/>
+                <rect x="115" y="80" width="120" height="4" rx="2" fill="#2e86ab" opacity="0.2" transform="rotate(3 180 140)"/>
+                <rect x="115" y="90" width="110" height="4" rx="2" fill="#2e86ab" opacity="0.2" transform="rotate(3 180 140)"/>
+
+                <!-- Front document -->
+                <rect x="120" y="30" width="160" height="200" rx="8" fill="url(#docGrad)"/>
+                <!-- Document header -->
+                <rect x="135" y="50" width="90" height="8" rx="4" fill="#1a5276"/>
+                <!-- Document lines -->
+                <rect x="135" y="70" width="130" height="4" rx="2" fill="#1a5276" opacity="0.2"/>
+                <rect x="135" y="82" width="120" height="4" rx="2" fill="#1a5276" opacity="0.2"/>
+                <rect x="135" y="94" width="125" height="4" rx="2" fill="#1a5276" opacity="0.2"/>
+                <rect x="135" y="106" width="100" height="4" rx="2" fill="#1a5276" opacity="0.2"/>
+                <!-- Checkmarks -->
+                <circle cx="145" cy="130" r="8" fill="#48a9a6" opacity="0.2"/>
+                <path d="M141 130 L144 133 L150 126" stroke="#48a9a6" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <rect x="160" y="127" width="80" height="4" rx="2" fill="#1a5276" opacity="0.15"/>
+
+                <circle cx="145" cy="150" r="8" fill="#48a9a6" opacity="0.2"/>
+                <path d="M141 150 L144 153 L150 146" stroke="#48a9a6" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <rect x="160" y="147" width="90" height="4" rx="2" fill="#1a5276" opacity="0.15"/>
+
+                <circle cx="145" cy="170" r="8" fill="#48a9a6" opacity="0.2"/>
+                <path d="M141 170 L144 173 L150 166" stroke="#48a9a6" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <rect x="160" y="167" width="70" height="4" rx="2" fill="#1a5276" opacity="0.15"/>
+
+                <!-- Stamp/seal -->
+                <circle cx="240" cy="195" r="20" fill="none" stroke="#1a5276" stroke-width="2" opacity="0.3"/>
+                <circle cx="240" cy="195" r="14" fill="none" stroke="#1a5276" stroke-width="1" opacity="0.3"/>
+                <text x="240" y="199" text-anchor="middle" font-size="8" fill="#1a5276" opacity="0.4" font-weight="bold">API</text>
+            </g>
+
+            <!-- Floating elements -->
+            <g opacity="0.6">
+                <!-- Database icon -->
+                <ellipse cx="320" cy="80" rx="25" ry="10" fill="none" stroke="#ffffff" stroke-width="2"/>
+                <path d="M295 80 L295 110 Q295 120 320 120 Q345 120 345 110 L345 80" fill="none" stroke="#ffffff" stroke-width="2"/>
+                <ellipse cx="320" cy="95" rx="25" ry="8" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+
+                <!-- Code brackets -->
+                <text x="60" y="120" font-size="36" fill="#ffffff" font-family="monospace" opacity="0.4">{</text>
+                <text x="340" y="200" font-size="36" fill="#ffffff" font-family="monospace" opacity="0.4">}</text>
+
+                <!-- Connection dots -->
+                <circle cx="50" cy="200" r="4" fill="#ffffff" opacity="0.3"/>
+                <circle cx="70" cy="220" r="3" fill="#ffffff" opacity="0.2"/>
+                <circle cx="350" cy="250" r="5" fill="#ffffff" opacity="0.3"/>
+                <circle cx="330" cy="270" r="3" fill="#ffffff" opacity="0.2"/>
+            </g>
+
+            <!-- Person silhouette with plus -->
+            <g transform="translate(300, 220)">
+                <circle cx="0" cy="-15" r="12" fill="#ffffff" opacity="0.8"/>
+                <path d="M-15 10 Q-15 -5 0 -5 Q15 -5 15 10 L15 25 L-15 25 Z" fill="#ffffff" opacity="0.8"/>
+                <circle cx="18" cy="5" r="10" fill="#48a9a6"/>
+                <path d="M18 0 L18 10 M13 5 L23 5" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+            </g>
+        </svg>
+
+        <!-- Text content -->
+        <div class="text-center text-white">
+            <h2 class="fw-bold mb-3">@L["app.title"]</h2>
+            <p class="lead opacity-75 mb-4" style="max-width: 400px;">
+                @L["app.description"]
+            </p>
+            <div class="d-flex justify-content-center gap-4 mt-4">
+                <div class="text-center">
+                    <i class="bi bi-database fs-2 mb-2 d-block opacity-75"></i>
+                    <small class="opacity-75">API Access</small>
+                </div>
+                <div class="text-center">
+                    <i class="bi bi-shield-check fs-2 mb-2 d-block opacity-75"></i>
+                    <small class="opacity-75">Secure</small>
+                </div>
+                <div class="text-center">
+                    <i class="bi bi-lightning fs-2 mb-2 d-block opacity-75"></i>
+                    <small class="opacity-75">Fast</small>
+                </div>
             </div>
-            <div class="card-body">
-                <StatusMessage Message="@Message" />
-                <EditForm Model="Input" method="post" OnValidSubmit="RegisterUser" FormName="register">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary class="text-danger" role="alert" />
+        </div>
+    </div>
 
-                    <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.UserName" id="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="@L["registration.username"]" />
-                        <label for="Input.UserName">@L["registration.username"]</label>
-                        <ValidationMessage For="() => Input.UserName" class="text-danger" />
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="@L["registration.email"]" />
-                        <label for="Input.Email">@L["registration.email"]</label>
-                        <ValidationMessage For="() => Input.Email" class="text-danger" />
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="@L["registration.password"]" />
-                        <label for="Input.Password">@L["registration.password"]</label>
-                        <ValidationMessage For="() => Input.Password" class="text-danger" />
-                        <small class="text-muted">@L["registration.password.hint"]</small>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="@L["registration.confirmPassword"]" />
-                        <label for="Input.ConfirmPassword">@L["registration.confirmPassword"]</label>
-                        <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
-                    </div>
-
-                    <div class="alert alert-info small mb-3">
-                        <i class="bi bi-info-circle me-1"></i>
-                        @L["registration.trial.info"]
-                    </div>
-
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="bi bi-person-plus me-2"></i>@L["registration.submit"]
-                        </button>
-                    </div>
-                </EditForm>
+    <!-- Right side - Registration form -->
+    <div class="col-lg-6 col-md-8 col-12">
+        <div class="p-4 p-lg-5">
+            <div class="text-center mb-4 d-lg-none">
+                <i class="bi bi-journal-code text-primary" style="font-size: 3rem;"></i>
+                <h3 class="mt-2 text-primary">@L["app.title"]</h3>
             </div>
-            <div class="card-footer text-center">
-                <span class="text-muted">@L["registration.haveAccount"]</span>
-                <a href="Account/Login" class="text-decoration-none ms-1">@L["registration.login"]</a>
-            </div>
+
+            <h4 class="mb-4 text-center text-lg-start">
+                <i class="bi bi-person-plus-fill text-primary me-2"></i>@L["registration.title"]
+            </h4>
+
+            <StatusMessage Message="@Message" />
+
+            <EditForm Model="Input" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger small" role="alert" />
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <InputText @bind-Value="Input.FirstName" id="Input.FirstName" class="form-control" autocomplete="given-name" placeholder="@L["user.firstName"]" data-autofocus="true" />
+                            <label for="Input.FirstName"><i class="bi bi-person me-1 text-muted"></i>@L["user.firstName"]</label>
+                            <ValidationMessage For="() => Input.FirstName" class="text-danger small" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <InputText @bind-Value="Input.LastName" id="Input.LastName" class="form-control" autocomplete="family-name" placeholder="@L["user.lastName"]" />
+                            <label for="Input.LastName">@L["user.lastName"]</label>
+                            <ValidationMessage For="() => Input.LastName" class="text-danger small" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Input.UserName" id="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="@L["registration.username"]" />
+                    <label for="Input.UserName"><i class="bi bi-at me-1 text-muted"></i>@L["registration.username"]</label>
+                    <ValidationMessage For="() => Input.UserName" class="text-danger small" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="@L["registration.email"]" />
+                    <label for="Input.Email"><i class="bi bi-envelope me-1 text-muted"></i>@L["registration.email"]</label>
+                    <ValidationMessage For="() => Input.Email" class="text-danger small" />
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="@L["registration.password"]" />
+                    <label for="Input.Password"><i class="bi bi-lock me-1 text-muted"></i>@L["registration.password"]</label>
+                    <ValidationMessage For="() => Input.Password" class="text-danger small" />
+                    <small class="text-muted"><i class="bi bi-info-circle me-1"></i>@L["registration.password.hint"]</small>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="@L["registration.confirmPassword"]" />
+                    <label for="Input.ConfirmPassword"><i class="bi bi-lock-fill me-1 text-muted"></i>@L["registration.confirmPassword"]</label>
+                    <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger small" />
+                </div>
+
+                <div class="alert alert-info small mb-4 d-flex align-items-center" role="alert">
+                    <i class="bi bi-gift me-2 fs-5"></i>
+                    <div>@L["registration.trial.info"]</div>
+                </div>
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>@L["registration.submit"]
+                    </button>
+                </div>
+
+                <div class="text-center">
+                    <span class="text-muted">@L["registration.haveAccount"]</span>
+                    <a href="Account/Login" class="text-decoration-none ms-1 fw-semibold">@L["registration.login"]</a>
+                </div>
+            </EditForm>
         </div>
     </div>
 </div>
@@ -91,6 +224,8 @@
     public async Task RegisterUser(EditContext editContext)
     {
         var user = CreateUser();
+        user.FirstName = Input.FirstName;
+        user.LastName = Input.LastName;
         user.CreatedAt = DateTime.UtcNow;
         user.TrialEndDate = DateOnly.FromDateTime(DateTime.Today.AddMonths(1));
 
@@ -151,6 +286,14 @@
 
     private sealed class InputModel
     {
+        [StringLength(100, ErrorMessage = "Jméno může mít maximálně 100 znaků")]
+        [Display(Name = "FirstName")]
+        public string? FirstName { get; set; }
+
+        [StringLength(100, ErrorMessage = "Příjmení může mít maximálně 100 znaků")]
+        [Display(Name = "LastName")]
+        public string? LastName { get; set; }
+
         [Required(ErrorMessage = "Uživatelské jméno je povinné")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Uživatelské jméno musí mít 3-50 znaků")]
         [Display(Name = "Username")]

@@ -63,6 +63,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
         options.Password.RequireUppercase = true;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredLength = 6;
+        options.User.RequireUniqueEmail = true;
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -119,7 +120,10 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseStaticFiles();
 app.UseRequestLocalization();
 
@@ -160,27 +164,29 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Seed admin user
+    // Seed admin user (temporary: recreate admin on each start - REMOVE IN PRODUCTION)
     var adminEmail = "admin@legislativeenums.cz";
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
-    if (adminUser == null)
+    if (adminUser != null)
     {
-        adminUser = new ApplicationUser
-        {
-            UserName = "admin",
-            Email = adminEmail,
-            EmailConfirmed = true,
-            FirstName = "Admin",
-            LastName = "User",
-            Role = UserRole.Admin,
-            Enabled = true,
-            CreatedAt = DateTime.UtcNow
-        };
-        var result = await userManager.CreateAsync(adminUser, "Admin123!");
-        if (result.Succeeded)
-        {
-            await userManager.AddToRoleAsync(adminUser, "Admin");
-        }
+        await userManager.DeleteAsync(adminUser);
+    }
+
+    adminUser = new ApplicationUser
+    {
+        UserName = "admin",
+        Email = adminEmail,
+        EmailConfirmed = true,
+        FirstName = "Admin",
+        LastName = "User",
+        Role = UserRole.Admin,
+        Enabled = true,
+        CreatedAt = DateTime.UtcNow
+    };
+    var result = await userManager.CreateAsync(adminUser, "Admin123!");
+    if (result.Succeeded)
+    {
+        await userManager.AddToRoleAsync(adminUser, "Admin");
     }
 }
 

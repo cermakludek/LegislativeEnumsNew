@@ -36,7 +36,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Kód *</label>
-                            <InputText @bind-Value="model.Code" class="form-control" />
+                            <InputText @bind-Value="model.Code" class="form-control" @ref="firstInput" />
                             <ValidationMessage For="() => model.Code" class="text-danger" />
                         </div>
                         <div class="mb-3">
@@ -183,6 +183,17 @@ else
     private bool showForm;
     private long? editingId;
     private FlagModel model = new();
+    private InputText? firstInput;
+    private bool shouldFocus;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (shouldFocus && firstInput?.Element != null)
+        {
+            shouldFocus = false;
+            await firstInput.Element.Value.FocusAsync();
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -202,6 +213,7 @@ else
         model = new FlagModel { Active = true };
         editingId = null;
         showForm = true;
+        shouldFocus = true;
     }
 
     private void EditItem(Flag item)
@@ -220,6 +232,7 @@ else
         };
         editingId = item.Id;
         showForm = true;
+        shouldFocus = true;
     }
 
     private void CancelForm()
